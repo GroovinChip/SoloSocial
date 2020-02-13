@@ -37,6 +37,7 @@ dependencies:
   package_info: ^0.4.0+13
   snapfeed: ^0.1.0+1
   permission_handler: ^4.2.0+hotfix.3
+  firebase_core: ^0.4.3+3
 
 dev_dependencies:
   flutter_test:
