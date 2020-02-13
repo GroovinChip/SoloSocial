@@ -16,7 +16,7 @@ dependencies:
   google_fonts: ^0.3.7
   firebase_auth: ^0.15.4
   google_sign_in: ^4.1.1
-  cloud_firestore: ^0.13.2
+  cloud_firestore: ^0.13.2+1
   groovin_widgets: ^1.4.2
   avataaar_image: ^1.0.8
   material_design_icons_flutter: ^3.4.4895
@@ -37,7 +37,6 @@ dependencies:
   package_info: ^0.4.0+13
   snapfeed: ^0.1.0+1
   permission_handler: ^4.2.0+hotfix.3
-  firebase_core: ^0.4.3+3
 
 dev_dependencies:
   flutter_test:
