@@ -24,9 +24,14 @@ if (flutterVersionName == null) {
 apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-if (!System.getenv()["CI"]) {
-    def keystoreProperties = new Properties()
-    def keystorePropertiesFile = rootProject.file('key.properties')
+def keystoreProperties
+def keystorePropertiesFile
+
+if (System.getenv()["CI"]) {
+    //do nothing
+} else {
+    keystoreProperties = new Properties()
+    keystorePropertiesFile = rootProject.file('key.properties')
     if (keystorePropertiesFile.exists()) {
         keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
     }
