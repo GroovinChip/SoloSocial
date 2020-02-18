@@ -47,6 +47,11 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
       child: Snapfeed(
         projectId: ApiKeys.snapfeedProjectId,
         secret: ApiKeys.snapfeedSecret,
+        config: SnapfeedConfig.defaultConfig(
+          primaryColor: Colors.indigo,
+          teaserTitle: 'Hi there!',
+          teaserMessage: 'If you have any issues or suggestions about SoloSocial, we\'d love to hear about it.',
+        ),
         child: MaterialApp(
           title: 'SoloSocial',
           theme: ThemeData(
