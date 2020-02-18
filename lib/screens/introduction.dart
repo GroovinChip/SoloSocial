@@ -29,6 +29,14 @@ class _IntroductionState extends State<Introduction> {
   Widget build(BuildContext context) {
     final _userBloc = Provider.of<Bloc>(context);
     final _sentry = Provider.of<SentryClient>(context);
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Theme.of(context).canvasColor,
+      statusBarBrightness: Brightness.light,
+      systemNavigationBarColor: Theme.of(context).canvasColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ));
+
     return Scaffold(
       body: SafeArea(
         child: IntroductionScreen(
@@ -151,6 +159,12 @@ class _IntroductionState extends State<Introduction> {
                     if (_firestoreControl.users.document(user.uid).path.isEmpty) {
                       await _firestoreControl.users.document(user.uid).setData({});
                     }
+                    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                      statusBarColor: Theme.of(context).canvasColor,
+                      statusBarBrightness: Brightness.light,
+                      systemNavigationBarColor: Theme.of(context).primaryColor,
+                      systemNavigationBarIconBrightness: Brightness.light,
+                    ));
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => PostFeed(

@@ -15,6 +15,14 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final _userBloc = Provider.of<Bloc>(context);
     final _sentry = Provider.of<SentryClient>(context);
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Theme.of(context).canvasColor,
+      statusBarBrightness: Brightness.light,
+      systemNavigationBarColor: Theme.of(context).canvasColor,
+      systemNavigationBarIconBrightness: Brightness.light,
+    ));
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -33,6 +41,12 @@ class _LoginState extends State<Login> {
                   if (_firestoreControl.posts.document(user.uid).path.isEmpty) {
                     await _firestoreControl.posts.document(user.uid).setData({});
                   }
+                  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                    statusBarColor: Theme.of(context).canvasColor,
+                    statusBarBrightness: Brightness.light,
+                    systemNavigationBarColor: Theme.of(context).primaryColor,
+                    systemNavigationBarIconBrightness: Brightness.light,
+                  ));
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => PostFeed(

@@ -94,6 +94,12 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                       child: Text('Sign Out'),
                       onPressed: () {
                         _auth.signOut();
+                        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                          statusBarColor: Theme.of(context).canvasColor,
+                          statusBarBrightness: Brightness.light,
+                          systemNavigationBarColor: Theme.of(context).canvasColor,
+                          systemNavigationBarIconBrightness: Brightness.light,
+                        ));
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) => Login(),
