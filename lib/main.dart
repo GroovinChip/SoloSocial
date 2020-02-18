@@ -1,9 +1,11 @@
 import 'package:solo_social/library.dart';
 import 'package:sentry/sentry.dart';
 import 'package:solo_social/utilities/api_keys.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
   runApp(SoloSocialApp());
 }
 
