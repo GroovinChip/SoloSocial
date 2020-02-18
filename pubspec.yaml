@@ -1,7 +1,7 @@
 name: solo_social
 description: SoloSocial.
 
-version: 0.0.33
+version: 0.0.34
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -16,7 +16,7 @@ dependencies:
   google_fonts: ^0.3.7
   firebase_auth: ^0.15.4
   google_sign_in: ^4.1.1
-  cloud_firestore: ^0.13.2
+  cloud_firestore: ^0.13.2+1
   groovin_widgets: ^1.4.2
   avataaar_image: ^1.0.8
   material_design_icons_flutter: ^3.4.4895
