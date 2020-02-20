@@ -32,6 +32,7 @@ class _PostFeedState extends State<PostFeed> {
           style: GoogleFonts.openSans(
             fontSize: 26,
             fontWeight: FontWeight.bold,
+            letterSpacing: 1,
           ),
         ),
       ),
