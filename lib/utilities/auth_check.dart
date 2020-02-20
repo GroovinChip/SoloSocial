@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:sentry/sentry.dart';
 import 'package:solo_social/library.dart';
 
-import '../screens/introduction.dart';
-
 class AuthCheck extends StatefulWidget {
   @override
   _AuthCheckState createState() => _AuthCheckState();
@@ -75,8 +73,6 @@ class _AuthCheckState extends State<AuthCheck> {
             return PostFeed(
               user: _user,
             );
-          } else if (_firstLaunch == true && _user == null) {
-            return Introduction();
           } else {
             return Login();
           }
