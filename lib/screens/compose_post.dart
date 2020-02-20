@@ -55,6 +55,7 @@ class _ComposePostState extends State<ComposePost> {
                       style: GoogleFonts.openSans(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
+                        letterSpacing: 1,
                       ),
                     ),
                     backgroundColor: Theme.of(context).accentColor,
