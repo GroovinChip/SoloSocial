@@ -4,9 +4,11 @@ import 'package:solo_social/utilities/api_keys.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
-  runApp(SoloSocialApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await runZoned<Future<void>>(() async {
+    runApp(SoloSocialApp());
+  }, onError: Crashlytics.instance.recordError);
 }
 
 class SoloSocialApp extends StatefulWidget {
