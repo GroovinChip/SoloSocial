@@ -7,15 +7,18 @@ class ComposeFab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton.extended(
-      icon: Icon(Icons.edit),
-      label: Text('Compose'),
-      onPressed: () => Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) {
-            return ComposePost();
-          },
-          fullscreenDialog: true,
+    return Semantics(
+      label: 'Compose Post',
+      child: FloatingActionButton.extended(
+        icon: Icon(Icons.edit),
+        label: Text('Compose'),
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) {
+              return ComposePost();
+            },
+            fullscreenDialog: true,
+          ),
         ),
       ),
     );

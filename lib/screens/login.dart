@@ -45,38 +45,41 @@ class _LoginState extends State<Login> {
               ],
             ),
             SizedBox(height: 150),
-            SignInButton(
-              Buttons.Google,
-              onPressed: () async {
-                _googleAuth.handleSignIn().then((FirebaseUser user) async {
-                  _userBloc.user.add(user);
-                  final _firestoreControl = FirestoreControl(
-                    userId: user.uid,
-                    context: context,
-                  );
-                  _firestoreControl.getPosts();
-                  if (_firestoreControl.posts.document(user.uid).path.isEmpty) {
-                    await _firestoreControl.posts.document(user.uid).setData({});
-                  }
-                  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                    statusBarColor: Theme.of(context).canvasColor,
-                    statusBarBrightness: Brightness.light,
-                    systemNavigationBarColor: Theme.of(context).primaryColor,
-                    systemNavigationBarIconBrightness: Brightness.light,
-                  ));
-                  Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (context) => PostFeed(
-                        user: user,
+            Semantics(
+              label: 'Sign in with Google',
+              child: SignInButton(
+                Buttons.Google,
+                onPressed: () async {
+                  _googleAuth.handleSignIn().then((FirebaseUser user) async {
+                    _userBloc.user.add(user);
+                    final _firestoreControl = FirestoreControl(
+                      userId: user.uid,
+                      context: context,
+                    );
+                    _firestoreControl.getPosts();
+                    if (_firestoreControl.posts.document(user.uid).path.isEmpty) {
+                      await _firestoreControl.posts.document(user.uid).setData({});
+                    }
+                    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                      statusBarColor: Theme.of(context).canvasColor,
+                      statusBarBrightness: Brightness.light,
+                      systemNavigationBarColor: Theme.of(context).primaryColor,
+                      systemNavigationBarIconBrightness: Brightness.light,
+                    ));
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => PostFeed(
+                          user: user,
+                        ),
                       ),
-                    ),
-                        (route) => false,
-                  );
-                }).catchError((exc) async {
-                  print('GoogleAuth error: $exc');
-                  await _sentry.captureException(exception: exc);
-                });
-              },
+                          (route) => false,
+                    );
+                  }).catchError((exc) async {
+                    print('GoogleAuth error: $exc');
+                    await _sentry.captureException(exception: exc);
+                  });
+                },
+              ),
             ),
           ],
         ),
