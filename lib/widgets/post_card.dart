@@ -71,61 +71,64 @@ class _PostCardState extends State<PostCard> {
                 color: Colors.white,
               ),
             ),
-            trailing: PopupMenuButton(
-              child: Ink(
-                child: Icon(Icons.keyboard_arrow_down),
-                width: 50,
-                height: 50,
+            trailing: Semantics(
+              label: 'See options',
+              child: PopupMenuButton(
+                child: Ink(
+                  child: Icon(Icons.keyboard_arrow_down),
+                  width: 50,
+                  height: 50,
+                ),
+                color: Colors.indigo[700],
+                itemBuilder: (_) => [
+                  widget.sourceLink != 'NoSource' ? PopupMenuItem(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(MdiIcons.exitRun),
+                        SizedBox(width: 8),
+                        Text(
+                          'Go to source',
+                          style: TextStyle(
+                            color: Colors.white
+                          ),
+                        ),
+                      ],
+                    ),
+                    value: 'GoToSource',
+                  ) : null,
+                  PopupMenuItem(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(MdiIcons.share),
+                        SizedBox(width: 8),
+                        Text(
+                          'Share',
+                          style: TextStyle(
+                              color: Colors.white
+                          ),
+                        ),
+                      ],
+                    ),
+                    value: 'Share',
+                  ),
+                  PopupMenuItem(
+                    child: Row(
+                      children: <Widget>[
+                        Icon(MdiIcons.delete),
+                        SizedBox(width: 8),
+                        Text(
+                          'Delete',
+                          style: TextStyle(
+                              color: Colors.white
+                          ),
+                        ),
+                      ],
+                    ),
+                    value: 'Delete',
+                  ),
+                ],
+                onSelected: _handleMenuSelection,
               ),
-              color: Colors.indigo[700],
-              itemBuilder: (_) => [
-                widget.sourceLink != 'NoSource' ? PopupMenuItem(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(MdiIcons.exitRun),
-                      SizedBox(width: 8),
-                      Text(
-                        'Go to source',
-                        style: TextStyle(
-                          color: Colors.white
-                        ),
-                      ),
-                    ],
-                  ),
-                  value: 'GoToSource',
-                ) : null,
-                PopupMenuItem(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(MdiIcons.share),
-                      SizedBox(width: 8),
-                      Text(
-                        'Share',
-                        style: TextStyle(
-                            color: Colors.white
-                        ),
-                      ),
-                    ],
-                  ),
-                  value: 'Share',
-                ),
-                PopupMenuItem(
-                  child: Row(
-                    children: <Widget>[
-                      Icon(MdiIcons.delete),
-                      SizedBox(width: 8),
-                      Text(
-                        'Delete',
-                        style: TextStyle(
-                            color: Colors.white
-                        ),
-                      ),
-                    ],
-                  ),
-                  value: 'Delete',
-                ),
-              ],
-              onSelected: _handleMenuSelection,
             ),
           ),
           ListTile(

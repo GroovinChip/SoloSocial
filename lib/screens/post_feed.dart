@@ -88,20 +88,23 @@ class _PostFeedState extends State<PostFeed> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () => showModalBottomSheet(
-                  context: context,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(12),
-                      topLeft: Radius.circular(12),
+              Semantics(
+                label: 'Open Menu',
+                child: IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(12),
+                        topLeft: Radius.circular(12),
+                      ),
                     ),
-                  ),
-                  backgroundColor: Theme.of(context).canvasColor,
-                  builder: (_) => MainMenuSheet(
-                    user: widget.user,
-                    scaffoldKey: _scaffoldKey,
+                    backgroundColor: Theme.of(context).canvasColor,
+                    builder: (_) => MainMenuSheet(
+                      user: widget.user,
+                      scaffoldKey: _scaffoldKey,
+                    ),
                   ),
                 ),
               ),
