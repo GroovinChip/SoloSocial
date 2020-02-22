@@ -9,10 +9,7 @@ class AuthCheck extends StatefulWidget {
 
 class _AuthCheckState extends State<AuthCheck> {
   FirebaseUser _user;
-
-  void wait() async {
-    await Future.delayed(Duration(seconds: 2));
-  }
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -27,35 +24,17 @@ class _AuthCheckState extends State<AuthCheck> {
       if (_user != null) {
         _userBloc.user.add(_user);
       }
+      setState(() {
+        isLoading = false;
+      });
     }
 
     _checkForCachedUser();
     return StreamBuilder<FirebaseUser>(
       stream: _userBloc.currentUser,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          wait();
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'SoloSocial',
-                    style: GoogleFonts.openSans(
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  CircularProgressIndicator(
-                    backgroundColor: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-          );
+        if (!snapshot.hasData && isLoading == true) {
+          return Container(color: Theme.of(context).canvasColor,);
         } else {
           if (_user != null) {
             return PostFeed(
