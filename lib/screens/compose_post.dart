@@ -13,8 +13,12 @@ class _ComposePostState extends State<ComposePost> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<String> _tags = [];
   List<String> _options = [
-    'Post', 'Comment', 'Facebook',
-    'Instagram', 'Twitter', 'Reddit',
+    'Post',
+    'Comment',
+    'Facebook',
+    'Instagram',
+    'Twitter',
+    'Reddit',
     'Snapchat',
   ];
 
@@ -271,17 +275,19 @@ class _ComposePostState extends State<ComposePost> {
                         ),
                       ],
                     ),
-                    _sourceLinkController.text.isNotEmpty ? Row(
-                      children: <Widget>[
-                        SizedBox(width: 18),
-                        Text(
-                          '==> ' + _sourceLinkController.text,
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        )
-                      ],
-                    ): Container(),
+                    _sourceLinkController.text.isNotEmpty
+                        ? Row(
+                            children: <Widget>[
+                              SizedBox(width: 18),
+                              Text(
+                                '==> ' + _sourceLinkController.text,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              )
+                            ],
+                          )
+                        : Container(),
                   ],
                 ),
               ),
@@ -306,27 +312,23 @@ class _ComposePostState extends State<ComposePost> {
       } else {
         _scaffoldKey.currentState.showSnackBar(
           SnackBar(
-            content: Text(
-              'Are you sure you want to post without adding text?',
-              style: TextStyle(
-                color: Colors.white,
-              ),
+            content: Row(
+              children: <Widget>[
+                Icon(
+                  MdiIcons.alertCircleOutline,
+                  color: Colors.white,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  'Please add some text to your post',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
             backgroundColor: Theme.of(context).accentColor,
             behavior: SnackBarBehavior.floating,
-            action: SnackBarAction(
-              label: 'Yes',
-              textColor: Colors.white,
-              onPressed: () {
-                DateTime _timeCreated = DateTime.now();
-                try {
-                  _addPostToFirestore(_posts, _user, _timeCreated);
-                  Navigator.of(context).pop();
-                } catch (e) {
-                  print(e);
-                }
-              },
-            ),
           ),
         );
       }
@@ -337,11 +339,11 @@ class _ComposePostState extends State<ComposePost> {
   void _addPostToFirestore(CollectionReference _posts, FirebaseUser _user, DateTime _timeCreated) async {
     try {
       _posts.add({
-        'Username':_user.displayName,
-        'PostText':_postTextController.text,
+        'Username': _user.displayName,
+        'PostText': _postTextController.text,
         'TimeCreated': Timestamp.fromDate(_timeCreated),
-        'Tags':jsonEncode(_tags),
-        'SourceLink':_sourceLinkController.text,
+        'Tags': jsonEncode(_tags),
+        'SourceLink': _sourceLinkController.text,
       });
     } catch (e) {
       print(e);
