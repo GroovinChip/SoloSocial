@@ -8,7 +8,6 @@ class AuthCheck extends StatefulWidget {
 }
 
 class _AuthCheckState extends State<AuthCheck> {
-  SharedPreferences _prefs;
   bool _isFirstLaunch;
   FirebaseUser _user;
 
@@ -20,28 +19,20 @@ class _AuthCheckState extends State<AuthCheck> {
   Widget build(BuildContext context) {
     final _userBloc = Provider.of<Bloc>(context);
     final _sentry = Provider.of<SentryClient>(context);
-    /// Check for first launch; is true by default
-    void _checkForFirstLaunch() async {
-      try {
-        _prefs = await SharedPreferences.getInstance();
-        _isFirstLaunch = _prefs.getBool('isFirstLaunch') ?? true;
-        _userBloc.firstLaunchValue.add(_isFirstLaunch);
-      } catch (e) {
-        print(e);
-      }
-    }
 
     /// Check for cached user
     void _checkForCachedUser() async {
       _user = await FirebaseAuth.instance.currentUser().catchError((error) async {
         await _sentry.captureException(exception: error);
       });
+      if (_user != null) {
+        _userBloc.user.add(_user);
+      }
     }
 
-    _checkForFirstLaunch();
     _checkForCachedUser();
-    return StreamBuilder<bool>(
-      stream: _userBloc.isFirstLaunch,
+    return StreamBuilder<FirebaseUser>(
+      stream: _userBloc.currentUser,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           wait();
@@ -67,9 +58,7 @@ class _AuthCheckState extends State<AuthCheck> {
             ),
           );
         } else {
-          final _firstLaunch = snapshot.data;
-          if (_firstLaunch == false && _user != null) {
-            _userBloc.user.add(_user);
+          if (_user != null) {
             return PostFeed(
               user: _user,
             );

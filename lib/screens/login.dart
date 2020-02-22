@@ -72,7 +72,7 @@ class _LoginState extends State<Login> {
                           user: user,
                         ),
                       ),
-                          (route) => false,
+                      (route) => false,
                     );
                   }).catchError((exc) async {
                     print('GoogleAuth error: $exc');
