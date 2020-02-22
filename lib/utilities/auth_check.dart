@@ -8,7 +8,6 @@ class AuthCheck extends StatefulWidget {
 }
 
 class _AuthCheckState extends State<AuthCheck> {
-  bool _isFirstLaunch;
   FirebaseUser _user;
 
   void wait() async {
