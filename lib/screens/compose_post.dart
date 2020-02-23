@@ -39,256 +39,258 @@ class _ComposePostState extends State<ComposePost> {
             context: context,
           );
           _firestoreControl.getPosts();
-          return Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).canvasColor,
-              elevation: 0,
-              title: Text(
-                'Compose',
-                style: GoogleFonts.openSans(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              actions: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: ChoiceChip(
-                    label: Text(
-                      'Post',
-                      style: GoogleFonts.openSans(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        letterSpacing: 1,
-                      ),
-                    ),
-                    backgroundColor: Theme.of(context).accentColor,
-                    onSelected: (value) {
-                      _makePost(value, _firestoreControl.posts, _user, context);
-                    },
-                    selected: false,
+          return KeyboardDismisser(
+            child: Scaffold(
+              key: _scaffoldKey,
+              appBar: AppBar(
+                backgroundColor: Theme.of(context).canvasColor,
+                elevation: 0,
+                title: Text(
+                  'Compose',
+                  style: GoogleFonts.openSans(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ),
-            body: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 134),
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(_user.photoUrl),
-                            backgroundColor: Theme.of(context).accentColor,
-                          ),
+                actions: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: ChoiceChip(
+                      label: Text(
+                        'Post',
+                        style: GoogleFonts.openSans(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          letterSpacing: 1,
                         ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: TextField(
-                            controller: _postTextController,
-                            textCapitalization: TextCapitalization.sentences,
-                            autocorrect: true,
+                      ),
+                      backgroundColor: Theme.of(context).accentColor,
+                      onSelected: (value) {
+                        _makePost(value, _firestoreControl.posts, _user, context);
+                      },
+                      selected: false,
+                    ),
+                  ),
+                ],
+              ),
+              body: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 134),
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(_user.photoUrl),
+                              backgroundColor: Theme.of(context).accentColor,
+                            ),
+                          ),
+                          SizedBox(width: 16),
+                          Expanded(
+                            child: TextField(
+                              controller: _postTextController,
+                              textCapitalization: TextCapitalization.sentences,
+                              autocorrect: true,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                              decoration: InputDecoration(
+                                hintText: 'What\'s on your mind?',
+                              ),
+                              maxLines: 5,
+                              maxLength: 256,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          SizedBox(width: 30),
+                          Text(
+                            'Tags',
                             style: TextStyle(
                               color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                            decoration: InputDecoration(
-                              hintText: 'What\'s on your mind?',
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          SizedBox(width: 3),
+                          Expanded(
+                            child: ChipsChoice<String>.multiple(
+                              value: _tags,
+                              itemConfig: ChipsChoiceItemConfig(
+                                selectedColor: Colors.white,
+                                //unselectedColor: Theme.of(context).primaryColor,
+                              ),
+                              options: ChipsChoiceOption.listFrom<String, String>(
+                                source: _options,
+                                value: (i, v) => v,
+                                label: (i, v) => v,
+                              ),
+                              onChanged: (val) => setState(() => _tags = val),
+                              isWrapped: true,
                             ),
-                            maxLines: 5,
-                            maxLength: 256,
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(width: 30),
-                        Text(
-                          'Tags',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(width: 3),
-                        Expanded(
-                          child: ChipsChoice<String>.multiple(
-                            value: _tags,
-                            itemConfig: ChipsChoiceItemConfig(
-                              selectedColor: Colors.white,
-                              //unselectedColor: Theme.of(context).primaryColor,
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          SizedBox(width: 18),
+                          OutlineButton.icon(
+                            label: Text('Add Tag'),
+                            icon: Icon(MdiIcons.tagPlusOutline),
+                            borderSide: BorderSide(
+                              color: Colors.grey[400],
                             ),
-                            options: ChipsChoiceOption.listFrom<String, String>(
-                              source: _options,
-                              value: (i, v) => v,
-                              label: (i, v) => v,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
                             ),
-                            onChanged: (val) => setState(() => _tags = val),
-                            isWrapped: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(width: 18),
-                        OutlineButton.icon(
-                          label: Text('Add Tag'),
-                          icon: Icon(MdiIcons.tagPlusOutline),
-                          borderSide: BorderSide(
-                            color: Colors.grey[400],
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (_) => Theme(
-                              data: ThemeData.dark(),
-                              child: SimpleDialog(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                                backgroundColor: Theme.of(context).canvasColor,
-                                title: Text(
-                                  'New Tag',
-                                  style: GoogleFonts.openSans(),
-                                ),
-                                contentPadding: EdgeInsets.all(16),
-                                children: <Widget>[
-                                  TextField(
-                                    controller: _addTagController,
-                                    textCapitalization: TextCapitalization.sentences,
-                                    decoration: InputDecoration(
-                                      hintText: 'Tag Name',
-                                      enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                      focusedBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                      fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-                                      filled: Theme.of(context).inputDecorationTheme.filled,
-                                    ),
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (_) => Theme(
+                                data: ThemeData.dark(),
+                                child: SimpleDialog(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                                  backgroundColor: Theme.of(context).canvasColor,
+                                  title: Text(
+                                    'New Tag',
+                                    style: GoogleFonts.openSans(),
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[
-                                      ChoiceChip(
-                                        label: Text('Complete'),
-                                        backgroundColor: Theme.of(context).accentColor,
-                                        selected: false,
-                                        onSelected: (value) {
-                                          if (value == true && _addTagController.text.isNotEmpty) {
-                                            setState(() {
-                                              _options.add(_addTagController.text);
-                                            });
+                                  contentPadding: EdgeInsets.all(16),
+                                  children: <Widget>[
+                                    TextField(
+                                      controller: _addTagController,
+                                      textCapitalization: TextCapitalization.sentences,
+                                      decoration: InputDecoration(
+                                        hintText: 'Tag Name',
+                                        enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                                        focusedBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                                        fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                                        filled: Theme.of(context).inputDecorationTheme.filled,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        ChoiceChip(
+                                          label: Text('Complete'),
+                                          backgroundColor: Theme.of(context).accentColor,
+                                          selected: false,
+                                          onSelected: (value) {
+                                            if (value == true && _addTagController.text.isNotEmpty) {
+                                              setState(() {
+                                                _options.add(_addTagController.text);
+                                              });
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        children: <Widget>[
+                          SizedBox(width: 30),
+                          Text(
+                            'Other',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8),
+                      Row(
+                        children: <Widget>[
+                          SizedBox(width: 18),
+                          OutlineButton.icon(
+                            icon: Icon(Icons.link),
+                            label: Text('Refer to Source'),
+                            borderSide: BorderSide(
+                              color: Colors.grey[400],
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            onPressed: () => showDialog(
+                              context: context,
+                              builder: (_) => Theme(
+                                data: ThemeData.dark(),
+                                child: SimpleDialog(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                                  backgroundColor: Theme.of(context).canvasColor,
+                                  title: Text(
+                                    'Source Reference',
+                                    style: GoogleFonts.openSans(),
+                                  ),
+                                  contentPadding: EdgeInsets.all(16),
+                                  children: <Widget>[
+                                    TextField(
+                                      controller: _sourceLinkController,
+                                      keyboardType: TextInputType.url,
+                                      decoration: InputDecoration(
+                                        hintText: 'Paste link here',
+                                        enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                                        focusedBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                                        fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                                        filled: Theme.of(context).inputDecorationTheme.filled,
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        ChoiceChip(
+                                          label: Text('Complete'),
+                                          backgroundColor: Theme.of(context).accentColor,
+                                          selected: false,
+                                          onSelected: (value) {
+                                            // add tag indicating source link
+                                            // ensure tag only is entered once
+                                            if (_sourceLinkController.text.isNotEmpty && !_tags.contains('Source')) {
+                                              setState(() {
+                                                _options.add('Source');
+                                                _tags.add('Source');
+                                              });
+                                            }
                                             Navigator.pop(context);
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(width: 30),
-                        Text(
-                          'Other',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    Row(
-                      children: <Widget>[
-                        SizedBox(width: 18),
-                        OutlineButton.icon(
-                          icon: Icon(Icons.link),
-                          label: Text('Refer to Source'),
-                          borderSide: BorderSide(
-                            color: Colors.grey[400],
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (_) => Theme(
-                              data: ThemeData.dark(),
-                              child: SimpleDialog(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                                backgroundColor: Theme.of(context).canvasColor,
-                                title: Text(
-                                  'Source Reference',
-                                  style: GoogleFonts.openSans(),
-                                ),
-                                contentPadding: EdgeInsets.all(16),
-                                children: <Widget>[
-                                  TextField(
-                                    controller: _sourceLinkController,
-                                    keyboardType: TextInputType.url,
-                                    decoration: InputDecoration(
-                                      hintText: 'Paste link here',
-                                      enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                      focusedBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                      fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-                                      filled: Theme.of(context).inputDecorationTheme.filled,
+                                          },
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: <Widget>[
-                                      ChoiceChip(
-                                        label: Text('Complete'),
-                                        backgroundColor: Theme.of(context).accentColor,
-                                        selected: false,
-                                        onSelected: (value) {
-                                          // add tag indicating source link
-                                          // ensure tag only is entered once
-                                          if (_sourceLinkController.text.isNotEmpty && !_tags.contains('Source')) {
-                                            setState(() {
-                                              _options.add('Source');
-                                              _tags.add('Source');
-                                            });
-                                          }
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    _sourceLinkController.text.isNotEmpty
-                        ? Row(
-                            children: <Widget>[
-                              SizedBox(width: 18),
-                              Text(
-                                '==> ' + _sourceLinkController.text,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
-                          )
-                        : Container(),
-                  ],
+                        ],
+                      ),
+                      _sourceLinkController.text.isNotEmpty
+                          ? Row(
+                              children: <Widget>[
+                                SizedBox(width: 18),
+                                Text(
+                                  '==> ' + _sourceLinkController.text,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
               ),
             ),
