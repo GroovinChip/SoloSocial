@@ -1,5 +1,5 @@
 import 'package:solo_social/library.dart';
-import 'package:solo_social/utilities/firestore_control.dart';
+import 'package:validated/validated.dart' as validate;
 
 class ComposePost extends StatefulWidget {
   @override
@@ -21,6 +21,7 @@ class _ComposePostState extends State<ComposePost> {
     'Reddit',
     'Snapchat',
   ];
+  final _sourceLinkFormKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,8 @@ class _ComposePostState extends State<ComposePost> {
                       ),
                       backgroundColor: Theme.of(context).accentColor,
                       onSelected: (value) {
-                        _makePost(value, _firestoreControl.posts, _user, context);
+                        _validatePost(value, _postTextController.text, _firestoreControl.posts, _user,
+                            _sourceLinkController.text, context);
                       },
                       selected: false,
                     ),
@@ -165,6 +167,7 @@ class _ComposePostState extends State<ComposePost> {
                                     TextField(
                                       controller: _addTagController,
                                       textCapitalization: TextCapitalization.sentences,
+                                      autofocus: true,
                                       decoration: InputDecoration(
                                         hintText: 'Tag Name',
                                         enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
@@ -237,15 +240,22 @@ class _ComposePostState extends State<ComposePost> {
                                   ),
                                   contentPadding: EdgeInsets.all(16),
                                   children: <Widget>[
-                                    TextField(
-                                      controller: _sourceLinkController,
-                                      keyboardType: TextInputType.url,
-                                      decoration: InputDecoration(
-                                        hintText: 'Paste link here',
-                                        enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                        focusedBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                        fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-                                        filled: Theme.of(context).inputDecorationTheme.filled,
+                                    Form(
+                                      key: _sourceLinkFormKey,
+                                      child: TextFormField(
+                                        controller: _sourceLinkController,
+                                        keyboardType: TextInputType.url,
+                                        validator: (url) => !validate.isURL(url) ? 'Not a valid URL' : '',
+                                        autofocus: true,
+                                        decoration: InputDecoration(
+                                          hintText: 'Paste link here',
+                                          enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                                          focusedBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
+                                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
+                                          filled: Theme.of(context).inputDecorationTheme.filled,
+                                          errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
+                                          focusedErrorBorder: Theme.of(context).inputDecorationTheme.focusedErrorBorder,
+                                        ),
                                       ),
                                     ),
                                     Row(
@@ -256,15 +266,17 @@ class _ComposePostState extends State<ComposePost> {
                                           backgroundColor: Theme.of(context).accentColor,
                                           selected: false,
                                           onSelected: (value) {
-                                            // add tag indicating source link
+                                            // add tag indicating valid source link
                                             // ensure tag only is entered once
-                                            if (_sourceLinkController.text.isNotEmpty && !_tags.contains('Source')) {
-                                              setState(() {
-                                                _options.add('Source');
-                                                _tags.add('Source');
-                                              });
+                                            if (_sourceLinkFormKey.currentState.validate()) {
+                                              if (_sourceLinkController.text.isNotEmpty && !_tags.contains('Source')) {
+                                                setState(() {
+                                                  _options.add('Source');
+                                                  _tags.add('Source');
+                                                });
+                                              }
+                                              Navigator.pop(context);
                                             }
-                                            Navigator.pop(context);
                                           },
                                         ),
                                       ],
@@ -276,7 +288,7 @@ class _ComposePostState extends State<ComposePost> {
                           ),
                         ],
                       ),
-                      _sourceLinkController.text.isNotEmpty
+                      validate.isURL(_sourceLinkController.text)
                           ? Row(
                               children: <Widget>[
                                 SizedBox(width: 18),
@@ -301,12 +313,20 @@ class _ComposePostState extends State<ComposePost> {
   }
 
   /// Data validation prior to adding to Firestore
-  void _makePost(bool value, CollectionReference _posts, FirebaseUser _user, BuildContext context) {
+  void _validatePost(
+    bool value,
+    String postText,
+    CollectionReference _posts,
+    FirebaseUser _user,
+    String sourceLink,
+    BuildContext context,
+  ) {
     if (value == true) {
-      if (_postTextController.text.isNotEmpty) {
+      if (postText.isNotEmpty) {
         DateTime _timeCreated = DateTime.now();
+        String _sourceLink = validate.isURL(sourceLink) ? sourceLink : '';
         try {
-          _addPostToFirestore(_posts, _user, _timeCreated);
+          _addPostToFirestore(_posts, _user, postText, _timeCreated, _sourceLink,);
           Navigator.of(context).pop();
         } catch (e) {
           print(e);
@@ -338,14 +358,20 @@ class _ComposePostState extends State<ComposePost> {
   }
 
   /// Actually add data to Firestore
-  void _addPostToFirestore(CollectionReference _posts, FirebaseUser _user, DateTime _timeCreated) async {
+  void _addPostToFirestore(
+    CollectionReference _posts,
+    FirebaseUser _user,
+    String postText,
+    DateTime _timeCreated,
+    String sourceLink,
+  ) async {
     try {
       _posts.add({
         'Username': _user.displayName,
-        'PostText': _postTextController.text,
+        'PostText': postText,
         'TimeCreated': Timestamp.fromDate(_timeCreated),
         'Tags': jsonEncode(_tags),
-        'SourceLink': _sourceLinkController.text,
+        'SourceLink': sourceLink,
       });
     } catch (e) {
       print(e);

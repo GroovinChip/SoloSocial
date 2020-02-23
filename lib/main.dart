@@ -81,6 +81,18 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
                   color: Colors.indigo,
                 ),
               ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(
+                  color: Colors.red,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(14),
+                borderSide: BorderSide(
+                  color: Colors.red,
+                ),
+              ),
               filled: true,
               fillColor: Colors.indigo,
             ),
