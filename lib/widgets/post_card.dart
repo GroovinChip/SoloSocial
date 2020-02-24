@@ -31,9 +31,6 @@ class PostCard extends StatefulWidget {
 class _PostCardState extends State<PostCard> {
   void _handleMenuSelection(String selection) {
     switch (selection) {
-      case 'GoToSource':
-        launch(widget.sourceLink);
-        break;
       case 'Share':
         Share.share(widget.postText, subject: 'Check out my post from SoloSocial');
         break;
@@ -81,21 +78,6 @@ class _PostCardState extends State<PostCard> {
                 ),
                 color: Colors.indigo[700],
                 itemBuilder: (_) => [
-                  widget.sourceLink != 'NoSource'
-                      ? PopupMenuItem(
-                          child: Row(
-                            children: <Widget>[
-                              Icon(MdiIcons.exitRun),
-                              SizedBox(width: 8),
-                              Text(
-                                'Go to source',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                          value: 'GoToSource',
-                        )
-                      : null,
                   PopupMenuItem(
                     child: Row(
                       children: <Widget>[
