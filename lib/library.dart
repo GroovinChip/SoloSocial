@@ -27,6 +27,7 @@ export 'package:package_info/package_info.dart';
 export 'package:snapfeed/snapfeed.dart';
 export 'package:permission_handler/permission_handler.dart';
 export 'package:keyboard_dismisser/keyboard_dismisser.dart';
+export 'package:link_previewer/link_previewer.dart';
 
 /// Screens
 export 'package:solo_social/screens/post_feed.dart';
