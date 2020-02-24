@@ -35,9 +35,7 @@ class _PostCardState extends State<PostCard> {
         Share.share(widget.postText, subject: 'Check out my post from SoloSocial');
         break;
       case 'Delete':
-        setState(() {
-          widget.firestoreControl.posts.document(widget.postId).delete();
-        });
+        widget.firestoreControl.posts.document(widget.postId).delete();
         break;
     }
   }
@@ -144,8 +142,9 @@ class _PostCardState extends State<PostCard> {
               ? Container()
               : LinkPreviewer(
                   link: widget.sourceLink,
+                  defaultPlaceholderColor: Colors.indigo[300],
                   placeholder: Text(
-                    'Loading link preview...',
+                    'Loading link preview',
                     style: TextStyle(color: Colors.white),
                   ),
                   borderRadius: 14,
