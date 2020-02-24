@@ -245,7 +245,14 @@ class _ComposePostState extends State<ComposePost> {
                                       child: TextFormField(
                                         controller: _sourceLinkController,
                                         keyboardType: TextInputType.url,
-                                        validator: (url) => !validate.isURL(url) ? 'Not a valid URL' : '',
+                                        validator: (url) {
+                                          if (validate.isURL(url) == true) {
+                                            return null;
+                                          } else {
+                                            return 'Not a valid URL';
+                                          }
+                                          //return validate.isURL(url) == true ? 'Not a valid URL' : '';
+                                        },
                                         autofocus: true,
                                         decoration: InputDecoration(
                                           hintText: 'Paste link here',
@@ -268,6 +275,7 @@ class _ComposePostState extends State<ComposePost> {
                                           onSelected: (value) {
                                             // add tag indicating valid source link
                                             // ensure tag only is entered once
+                                            print(_sourceLinkFormKey.currentState.validate());
                                             if (_sourceLinkFormKey.currentState.validate()) {
                                               if (_sourceLinkController.text.isNotEmpty && !_tags.contains('Source')) {
                                                 setState(() {

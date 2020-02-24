@@ -81,21 +81,21 @@ class _PostCardState extends State<PostCard> {
                 ),
                 color: Colors.indigo[700],
                 itemBuilder: (_) => [
-                  widget.sourceLink != 'NoSource' ? PopupMenuItem(
-                    child: Row(
-                      children: <Widget>[
-                        Icon(MdiIcons.exitRun),
-                        SizedBox(width: 8),
-                        Text(
-                          'Go to source',
-                          style: TextStyle(
-                            color: Colors.white
+                  widget.sourceLink != 'NoSource'
+                      ? PopupMenuItem(
+                          child: Row(
+                            children: <Widget>[
+                              Icon(MdiIcons.exitRun),
+                              SizedBox(width: 8),
+                              Text(
+                                'Go to source',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    value: 'GoToSource',
-                  ) : null,
+                          value: 'GoToSource',
+                        )
+                      : null,
                   PopupMenuItem(
                     child: Row(
                       children: <Widget>[
@@ -103,9 +103,7 @@ class _PostCardState extends State<PostCard> {
                         SizedBox(width: 8),
                         Text(
                           'Share',
-                          style: TextStyle(
-                              color: Colors.white
-                          ),
+                          style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
@@ -118,9 +116,7 @@ class _PostCardState extends State<PostCard> {
                         SizedBox(width: 8),
                         Text(
                           'Delete',
-                          style: TextStyle(
-                              color: Colors.white
-                          ),
+                          style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),
@@ -140,26 +136,43 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
           ),
-          widget.tags.length > 0 ? Padding(
-            padding: const EdgeInsets.only(left: 12, right: 12),
-            child: Container(
-              height: 50,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: widget.tags.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Chip(
-                      label: Text(widget.tags[index]),
-                      backgroundColor: Theme.of(context).accentColor,
+          widget.tags.length > 0
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 12, right: 12),
+                  child: Container(
+                    height: 50,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: widget.tags.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Chip(
+                            label: Text(widget.tags[index]),
+                            backgroundColor: Theme.of(context).accentColor,
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            ),
-          ) : Container(),
+                  ),
+                )
+              : Container(),
           widget.tags.length > 0 ? SizedBox(height: 12) : Container(),
+          widget.sourceLink == 'NoSource'
+              ? Container()
+              : LinkPreviewer(
+                  link: widget.sourceLink,
+                  placeholder: Text(
+                    'Loading link preview...',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  borderRadius: 14,
+                  backgroundColor: Colors.indigo[300],
+                  titleTextColor: Colors.white,
+                  bodyTextColor: Colors.white,
+                  bodyMaxLines: 2,
+                  borderColor: Colors.indigo[300],
+                ),
         ],
       ),
     );
