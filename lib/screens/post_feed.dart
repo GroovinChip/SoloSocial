@@ -37,7 +37,7 @@ class _PostFeedState extends State<PostFeed> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestoreControl.posts.snapshots(),
+        stream: _firestoreControl.posts.orderBy('TimeCreated', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
