@@ -2,13 +2,13 @@ import 'package:solo_social/library.dart';
 
 class Bloc {
   /// Controllers
-  final _userController = BehaviorSubject<FirebaseUser>();
+  final _userController = BehaviorSubject<User>();
 
   /// Inputs
-  Sink<FirebaseUser> get user => _userController.sink;
+  Sink<User> get user => _userController.sink;
 
   /// Outputs
-  ValueStream<FirebaseUser> get currentUser => _userController.stream;
+  ValueStream<User> get currentUser => _userController.stream;
 
   // Close controllers
   void close() {

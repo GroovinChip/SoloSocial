@@ -14,7 +14,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final _userBloc = Provider.of<Bloc>(context);
-    final _sentry = Provider.of<SentryClient>(context);
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Theme.of(context).canvasColor,
@@ -50,15 +49,15 @@ class _LoginState extends State<Login> {
               child: SignInButton(
                 Buttons.Google,
                 onPressed: () async {
-                  _googleAuth.handleSignIn().then((FirebaseUser user) async {
+                  _googleAuth.handleSignIn().then((user) async {
                     _userBloc.user.add(user);
                     final _firestoreControl = FirestoreControl(
                       userId: user.uid,
                       context: context,
                     );
                     _firestoreControl.getPosts();
-                    if (_firestoreControl.posts.document(user.uid).path.isEmpty) {
-                      await _firestoreControl.posts.document(user.uid).setData({});
+                    if (_firestoreControl.posts.doc(user.uid).path.isEmpty) {
+                      await _firestoreControl.posts.doc(user.uid).set({});
                     }
                     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
                       statusBarColor: Theme.of(context).canvasColor,
@@ -76,7 +75,7 @@ class _LoginState extends State<Login> {
                     );
                   }).catchError((exc) async {
                     print('GoogleAuth error: $exc');
-                    await _sentry.captureException(exception: exc);
+                    await Sentry.captureException(exc);
                   });
                 },
               ),

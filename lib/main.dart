@@ -1,14 +1,21 @@
-import 'package:solo_social/library.dart';
-import 'package:sentry/sentry.dart';
-import 'package:solo_social/utilities/api_keys.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:sentry/sentry.dart';
+import 'package:solo_social/library.dart';
+import 'package:solo_social/utilities/api_keys.dart';
 
-void main() async {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
   WidgetsFlutterBinding.ensureInitialized();
-  await runZoned<Future<void>>(() async {
-    runApp(SoloSocialApp());
-  }, onError: Crashlytics.instance.recordError);
+  await Sentry.init(
+    (options) {
+      options.dsn = ApiKeys.sentryDsn;
+    },
+    appRunner: () => runApp(SoloSocialApp()),
+  );
 }
 
 class SoloSocialApp extends StatefulWidget {
@@ -17,8 +24,7 @@ class SoloSocialApp extends StatefulWidget {
 }
 
 class _SoloSocialAppState extends State<SoloSocialApp> {
-  SentryClient sentry = SentryClient(dsn: ApiKeys.sentryDsn);
-
+  final _navigatorKey = GlobalKey<NavigatorState>();
   PackageInfo _packageInfo;
   String appName;
   String packageName;
@@ -45,18 +51,20 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
     return MultiProvider(
       providers: [
         Provider<Bloc>(create: (_) => Bloc()),
-        Provider<SentryClient>(create: (_) => sentry),
         Provider<PackageInfo>(create: (_) => _packageInfo),
       ],
-      child: Snapfeed(
+      child: Wiredash(
+        navigatorKey: _navigatorKey,
         projectId: ApiKeys.snapfeedProjectId,
         secret: ApiKeys.snapfeedSecret,
-        config: SnapfeedConfig.defaultConfig(
+        options: WiredashOptionsData(),
+        theme: WiredashThemeData(
           primaryColor: Colors.indigo,
-          teaserTitle: 'Hi there!',
-          teaserMessage: 'If you have any issues or suggestions about SoloSocial, we\'d love to hear about it.',
+          //teaserTitle: 'Hi there!',
+          //teaserMessage: 'If you have any issues or suggestions about SoloSocial, we\'d love to hear about it.',
         ),
         child: MaterialApp(
+          navigatorKey: _navigatorKey,
           title: 'SoloSocial',
           theme: ThemeData(
             primarySwatch: Colors.indigo,

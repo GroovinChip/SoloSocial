@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sentry/sentry.dart';
+import 'package:sentry/sentry.dart' hide User;
 import 'package:solo_social/library.dart';
 
 class AuthCheck extends StatefulWidget {
@@ -8,19 +8,16 @@ class AuthCheck extends StatefulWidget {
 }
 
 class _AuthCheckState extends State<AuthCheck> {
-  FirebaseUser _user;
+  User _user;
   bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
     final _userBloc = Provider.of<Bloc>(context);
-    final _sentry = Provider.of<SentryClient>(context);
 
     /// Check for cached user
     void _checkForCachedUser() async {
-      _user = await FirebaseAuth.instance.currentUser().catchError((error) async {
-        await _sentry.captureException(exception: error);
-      });
+      _user = FirebaseAuth.instance.currentUser;
       if (_user != null) {
         _userBloc.user.add(_user);
       }
@@ -30,7 +27,7 @@ class _AuthCheckState extends State<AuthCheck> {
     }
 
     _checkForCachedUser();
-    return StreamBuilder<FirebaseUser>(
+    return StreamBuilder<User>(
       stream: _userBloc.currentUser,
       builder: (context, snapshot) {
         if (!snapshot.hasData && isLoading == true) {

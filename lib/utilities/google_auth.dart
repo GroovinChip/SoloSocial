@@ -2,23 +2,23 @@ import 'package:solo_social/library.dart';
 
 class GoogleAuth {
   /// Firebase related initializations
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   /// Sign in with Google Auth
-  Future<FirebaseUser> handleSignIn() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+  Future<User> handleSignIn() async {
+    final googleUser = await GoogleSignIn().signIn();
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
+    final googleAuth = await googleUser.authentication;
+
+    final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    final FirebaseUser user = (await _auth.signInWithCredential(credential)).user;
-    UserUpdateInfo _userUpdateInfo = UserUpdateInfo();
-    _userUpdateInfo.photoUrl = googleUser.photoUrl;
-    _userUpdateInfo.displayName = googleUser.displayName;
-    user.updateProfile(_userUpdateInfo);
-    return user;
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    _auth.currentUser.updateProfile(
+      displayName: googleUser.displayName,
+      photoURL: googleUser.photoUrl,
+    );
+    return _auth.currentUser;
   }
 }

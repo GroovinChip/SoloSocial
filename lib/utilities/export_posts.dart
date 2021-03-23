@@ -29,7 +29,7 @@ class ExportPosts {
     ];
 
     // Add post record to data
-    for (final DocumentSnapshot post in posts.documents) {
+    for (final DocumentSnapshot post in posts.docs) {
       data.add([
         post['Username'],
         dateFormat.format((post['TimeCreated'] as Timestamp).toDate()),

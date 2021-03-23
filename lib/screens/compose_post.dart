@@ -26,7 +26,7 @@ class _ComposePostState extends State<ComposePost> {
   @override
   Widget build(BuildContext context) {
     final _userBloc = Provider.of<Bloc>(context);
-    return StreamBuilder<FirebaseUser>(
+    return StreamBuilder<User>(
       stream: _userBloc.currentUser,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -84,7 +84,7 @@ class _ComposePostState extends State<ComposePost> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 134),
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(_user.photoUrl),
+                              backgroundImage: NetworkImage(_user.photoURL),
                               backgroundColor: Theme.of(context).accentColor,
                             ),
                           ),
@@ -325,7 +325,7 @@ class _ComposePostState extends State<ComposePost> {
     bool value,
     String postText,
     CollectionReference _posts,
-    FirebaseUser _user,
+    User _user,
     String sourceLink,
     BuildContext context,
   ) {
@@ -368,7 +368,7 @@ class _ComposePostState extends State<ComposePost> {
   /// Actually add data to Firestore
   void _addPostToFirestore(
     CollectionReference _posts,
-    FirebaseUser _user,
+    User _user,
     String postText,
     DateTime _timeCreated,
     String sourceLink,
