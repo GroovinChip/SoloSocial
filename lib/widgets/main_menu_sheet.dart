@@ -1,4 +1,4 @@
-import 'package:sentry/sentry.dart' hide User;
+import 'package:sentry/sentry.dart';
 import 'package:solo_social/library.dart';
 import 'package:solo_social/utilities/firestore_control.dart';
 import 'package:solo_social/widgets/delete_all_posts_dialog.dart';

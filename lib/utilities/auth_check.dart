@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sentry/sentry.dart' hide User;
 import 'package:solo_social/library.dart';
 
 class AuthCheck extends StatefulWidget {
