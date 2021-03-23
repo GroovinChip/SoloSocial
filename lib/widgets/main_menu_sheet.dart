@@ -161,8 +161,8 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                   Divider(height: 0),
                   ListTile(
                     leading: Icon(MdiIcons.informationVariant),
-                    title: Text(_packageInfo.appName),
-                    subtitle: Text('Version ' + _packageInfo.version),
+                    title: Text('${_packageInfo.appName}'),
+                    subtitle: Text('Version ${_packageInfo.version}'),
                   ),
                 ],
               ),

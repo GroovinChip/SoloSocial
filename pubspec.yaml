@@ -35,7 +35,7 @@ dependencies:
   file: ^6.1.0
   path_provider_ex: ^1.0.1
   csv: ^4.0.3
-  package_info: ^0.4.0+13
+  package_info: ^2.0.0
   wiredash: ^0.6.2
   permission_handler: ^4.2.0+hotfix.3
   firebase_crashlytics: ^0.1.3
