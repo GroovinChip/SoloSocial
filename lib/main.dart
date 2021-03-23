@@ -9,7 +9,7 @@ Future<void> main() async {
 
   await Firebase.initializeApp();
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
-  WidgetsFlutterBinding.ensureInitialized();
+
   await Sentry.init(
     (options) {
       options.dsn = ApiKeys.sentryDsn;

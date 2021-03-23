@@ -1,3 +1,4 @@
+import 'package:chips_choice/chips_choice.dart';
 import 'package:solo_social/library.dart';
 import 'package:validated/validated.dart' as validate;
 
@@ -66,8 +67,13 @@ class _ComposePostState extends State<ComposePost> {
                       ),
                       backgroundColor: Theme.of(context).accentColor,
                       onSelected: (value) {
-                        _validatePost(value, _postTextController.text, _firestoreControl.posts, _user,
-                            _sourceLinkController.text, context);
+                        _validatePost(
+                            value,
+                            _postTextController.text,
+                            _firestoreControl.posts,
+                            _user,
+                            _sourceLinkController.text,
+                            context);
                       },
                       selected: false,
                     ),
@@ -124,17 +130,19 @@ class _ComposePostState extends State<ComposePost> {
                           Expanded(
                             child: ChipsChoice<String>.multiple(
                               value: _tags,
-                              itemConfig: ChipsChoiceItemConfig(
-                                selectedColor: Colors.white,
-                                //unselectedColor: Theme.of(context).primaryColor,
+                              choiceActiveStyle: C2ChoiceStyle(
+                                color: Colors.white,
                               ),
-                              options: ChipsChoiceOption.listFrom<String, String>(
+                              /*choiceStyle: C2ChoiceStyle(
+                                color: Colors.white,
+                              ),*/
+                              choiceItems: C2Choice.listFrom<String, String>(
                                 source: _options,
                                 value: (i, v) => v,
                                 label: (i, v) => v,
                               ),
                               onChanged: (val) => setState(() => _tags = val),
-                              isWrapped: true,
+                              wrapped: true,
                             ),
                           ),
                         ],
@@ -156,8 +164,10 @@ class _ComposePostState extends State<ComposePost> {
                               builder: (_) => Theme(
                                 data: ThemeData.dark(),
                                 child: SimpleDialog(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                                  backgroundColor: Theme.of(context).canvasColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(14)),
+                                  backgroundColor:
+                                      Theme.of(context).canvasColor,
                                   title: Text(
                                     'New Tag',
                                     style: GoogleFonts.openSans(),
@@ -166,14 +176,23 @@ class _ComposePostState extends State<ComposePost> {
                                   children: <Widget>[
                                     TextField(
                                       controller: _addTagController,
-                                      textCapitalization: TextCapitalization.sentences,
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
                                       autofocus: true,
                                       decoration: InputDecoration(
                                         hintText: 'Tag Name',
-                                        enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                        focusedBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                        fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-                                        filled: Theme.of(context).inputDecorationTheme.filled,
+                                        enabledBorder: Theme.of(context)
+                                            .inputDecorationTheme
+                                            .enabledBorder,
+                                        focusedBorder: Theme.of(context)
+                                            .inputDecorationTheme
+                                            .enabledBorder,
+                                        fillColor: Theme.of(context)
+                                            .inputDecorationTheme
+                                            .fillColor,
+                                        filled: Theme.of(context)
+                                            .inputDecorationTheme
+                                            .filled,
                                       ),
                                     ),
                                     Row(
@@ -181,12 +200,16 @@ class _ComposePostState extends State<ComposePost> {
                                       children: <Widget>[
                                         ChoiceChip(
                                           label: Text('Complete'),
-                                          backgroundColor: Theme.of(context).accentColor,
+                                          backgroundColor:
+                                              Theme.of(context).accentColor,
                                           selected: false,
                                           onSelected: (value) {
-                                            if (value == true && _addTagController.text.isNotEmpty) {
+                                            if (value == true &&
+                                                _addTagController
+                                                    .text.isNotEmpty) {
                                               setState(() {
-                                                _options.add(_addTagController.text);
+                                                _options.add(
+                                                    _addTagController.text);
                                               });
                                               Navigator.pop(context);
                                             }
@@ -232,8 +255,10 @@ class _ComposePostState extends State<ComposePost> {
                               builder: (_) => Theme(
                                 data: ThemeData.dark(),
                                 child: SimpleDialog(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                                  backgroundColor: Theme.of(context).canvasColor,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(14)),
+                                  backgroundColor:
+                                      Theme.of(context).canvasColor,
                                   title: Text(
                                     'Source Reference',
                                     style: GoogleFonts.openSans(),
@@ -256,12 +281,24 @@ class _ComposePostState extends State<ComposePost> {
                                         autofocus: true,
                                         decoration: InputDecoration(
                                           hintText: 'Paste link here',
-                                          enabledBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                          focusedBorder: Theme.of(context).inputDecorationTheme.enabledBorder,
-                                          fillColor: Theme.of(context).inputDecorationTheme.fillColor,
-                                          filled: Theme.of(context).inputDecorationTheme.filled,
-                                          errorBorder: Theme.of(context).inputDecorationTheme.errorBorder,
-                                          focusedErrorBorder: Theme.of(context).inputDecorationTheme.focusedErrorBorder,
+                                          enabledBorder: Theme.of(context)
+                                              .inputDecorationTheme
+                                              .enabledBorder,
+                                          focusedBorder: Theme.of(context)
+                                              .inputDecorationTheme
+                                              .enabledBorder,
+                                          fillColor: Theme.of(context)
+                                              .inputDecorationTheme
+                                              .fillColor,
+                                          filled: Theme.of(context)
+                                              .inputDecorationTheme
+                                              .filled,
+                                          errorBorder: Theme.of(context)
+                                              .inputDecorationTheme
+                                              .errorBorder,
+                                          focusedErrorBorder: Theme.of(context)
+                                              .inputDecorationTheme
+                                              .focusedErrorBorder,
                                         ),
                                       ),
                                     ),
@@ -270,14 +307,20 @@ class _ComposePostState extends State<ComposePost> {
                                       children: <Widget>[
                                         ChoiceChip(
                                           label: Text('Complete'),
-                                          backgroundColor: Theme.of(context).accentColor,
+                                          backgroundColor:
+                                              Theme.of(context).accentColor,
                                           selected: false,
                                           onSelected: (value) {
                                             // add tag indicating valid source link
                                             // ensure tag only is entered once
-                                            print(_sourceLinkFormKey.currentState.validate());
-                                            if (_sourceLinkFormKey.currentState.validate()) {
-                                              if (_sourceLinkController.text.isNotEmpty && !_tags.contains('Source')) {
+                                            print(_sourceLinkFormKey
+                                                .currentState
+                                                .validate());
+                                            if (_sourceLinkFormKey.currentState
+                                                .validate()) {
+                                              if (_sourceLinkController
+                                                      .text.isNotEmpty &&
+                                                  !_tags.contains('Source')) {
                                                 setState(() {
                                                   _options.add('Source');
                                                   _tags.add('Source');
@@ -334,7 +377,13 @@ class _ComposePostState extends State<ComposePost> {
         DateTime _timeCreated = DateTime.now();
         String _sourceLink = validate.isURL(sourceLink) ? sourceLink : '';
         try {
-          _addPostToFirestore(_posts, _user, postText, _timeCreated, _sourceLink,);
+          _addPostToFirestore(
+            _posts,
+            _user,
+            postText,
+            _timeCreated,
+            _sourceLink,
+          );
           Navigator.of(context).pop();
         } catch (e) {
           print(e);
