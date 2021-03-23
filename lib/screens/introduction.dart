@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sentry/sentry.dart';
 import 'package:solo_social/library.dart';
+import 'package:solo_social/screens/post_feed.dart';
 import 'package:solo_social/utilities/firestore_control.dart';
 import 'package:solo_social/utilities/google_auth.dart';
-
-import 'package:solo_social/screens/post_feed.dart';
 
 class Introduction extends StatefulWidget {
   @override
@@ -28,7 +27,6 @@ class _IntroductionState extends State<Introduction> {
   @override
   Widget build(BuildContext context) {
     final _userBloc = Provider.of<Bloc>(context);
-    final _sentry = Provider.of<SentryClient>(context);
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Theme.of(context).canvasColor,
@@ -148,7 +146,7 @@ class _IntroductionState extends State<Introduction> {
               bodyWidget: SignInButton(
                 Buttons.Google,
                 onPressed: () async {
-                  _googleAuth.handleSignIn().then((FirebaseUser user) async {
+                  _googleAuth.handleSignIn().then((user) async {
                     _setFirstLaunchFlag();
                     _userBloc.user.add(user);
                     final _firestoreControl = FirestoreControl(
@@ -156,8 +154,8 @@ class _IntroductionState extends State<Introduction> {
                       context: context,
                     );
                     _firestoreControl.getPosts();
-                    if (_firestoreControl.users.document(user.uid).path.isEmpty) {
-                      await _firestoreControl.users.document(user.uid).setData({});
+                    if (_firestoreControl.users.doc(user.uid).path.isEmpty) {
+                      await _firestoreControl.users.doc(user.uid).set({});
                     }
                     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
                       statusBarColor: Theme.of(context).canvasColor,
@@ -171,11 +169,11 @@ class _IntroductionState extends State<Introduction> {
                           user: user,
                         ),
                       ),
-                          (route) => false,
+                      (route) => false,
                     );
                   }).catchError((exc) async {
                     print('GoogleAuth error: $exc');
-                    await _sentry.captureException(exception: exc);
+                    await Sentry.captureException(exc);
                   });
                 },
               ),

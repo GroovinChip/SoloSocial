@@ -3,7 +3,7 @@ import 'package:solo_social/utilities/firestore_control.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostCard extends StatefulWidget {
-  final FirebaseUser user;
+  final User user;
   final DateTime timeCreated;
   final String postId;
   final String username;
@@ -35,7 +35,7 @@ class _PostCardState extends State<PostCard> {
         Share.share(widget.postText, subject: 'Check out my post from SoloSocial');
         break;
       case 'Delete':
-        widget.firestoreControl.posts.document(widget.postId).delete();
+        widget.firestoreControl.posts.doc(widget.postId).delete();
         break;
     }
   }
@@ -51,7 +51,7 @@ class _PostCardState extends State<PostCard> {
         children: <Widget>[
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(widget.user.photoUrl),
+              backgroundImage: NetworkImage(widget.user.photoURL),
             ),
             title: Text(
               widget.username,

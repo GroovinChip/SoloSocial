@@ -1,10 +1,10 @@
 import 'package:sentry/sentry.dart';
-import 'package:solo_social/widgets/delete_all_posts_dialog.dart';
 import 'package:solo_social/library.dart';
 import 'package:solo_social/utilities/firestore_control.dart';
+import 'package:solo_social/widgets/delete_all_posts_dialog.dart';
 
 class MainMenuSheet extends StatefulWidget {
-  final FirebaseUser user;
+  final User user;
   final GlobalKey<ScaffoldState> scaffoldKey;
 
   MainMenuSheet({
@@ -35,10 +35,12 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
   }
 
   void checkStoragePermission() async {
-    Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions(
+    Map<PermissionGroup, PermissionStatus> permissions =
+        await PermissionHandler().requestPermissions(
       [PermissionGroup.storage],
     );
-    storagePermission = await PermissionHandler().checkPermissionStatus(PermissionGroup.storage);
+    storagePermission = await PermissionHandler()
+        .checkPermissionStatus(PermissionGroup.storage);
   }
 
   @override
@@ -50,7 +52,6 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
   @override
   Widget build(BuildContext context) {
     final _packageInfo = Provider.of<PackageInfo>(context);
-    final _sentry = Provider.of<SentryClient>(context);
     final _firestoreControl = FirestoreControl(
       userId: widget.user.uid,
       context: context,
@@ -65,7 +66,7 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
             child: CircularProgressIndicator(),
           );
         } else {
-          final _posts = snapshot.data.documents;
+          final _posts = snapshot.data.docs;
           return Theme(
             data: ThemeData.dark(),
             child: Container(
@@ -82,7 +83,7 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                   ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.white,
-                      backgroundImage: NetworkImage(widget.user.photoUrl),
+                      backgroundImage: NetworkImage(widget.user.photoURL),
                     ),
                     title: Text(widget.user.displayName),
                     subtitle: Text(widget.user.email),
@@ -90,14 +91,17 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                       borderSide: BorderSide(
                         color: Colors.white,
                       ),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25)),
                       child: Text('Sign Out'),
                       onPressed: () {
                         _auth.signOut();
-                        SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                        SystemChrome.setSystemUIOverlayStyle(
+                            SystemUiOverlayStyle(
                           statusBarColor: Theme.of(context).canvasColor,
                           statusBarBrightness: Brightness.light,
-                          systemNavigationBarColor: Theme.of(context).canvasColor,
+                          systemNavigationBarColor:
+                              Theme.of(context).canvasColor,
                           systemNavigationBarIconBrightness: Brightness.light,
                         ));
                         Navigator.of(context).pushAndRemoveUntil(
@@ -115,9 +119,12 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                           title: Text('Download Posts'),
                           onTap: () {
                             checkStoragePermission();
-                            if (storagePermission != null && storagePermission.value == 2) {
-                              _exportPosts.postsToCsv(snapshot.data).catchError((error) async {
-                                await _sentry.captureException(exception: error);
+                            if (storagePermission != null &&
+                                storagePermission.value == 2) {
+                              _exportPosts
+                                  .postsToCsv(snapshot.data)
+                                  .catchError((error) async {
+                                await Sentry.captureException(error);
                               });
                               Navigator.pop(context);
                               _exportPosts.shareFile();
@@ -148,14 +155,14 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                     title: Text('Send Feedback'),
                     onTap: () {
                       Navigator.pop(context);
-                      Snapfeed.of(context).startFeedback();
+                      Wiredash.of(context).show();
                     },
                   ),
                   Divider(height: 0),
                   ListTile(
                     leading: Icon(MdiIcons.informationVariant),
-                    title: Text(_packageInfo.appName),
-                    subtitle: Text('Version ' + _packageInfo.version),
+                    title: Text('${_packageInfo.appName}'),
+                    subtitle: Text('Version ${_packageInfo.version}'),
                   ),
                 ],
               ),

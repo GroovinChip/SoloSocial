@@ -2,7 +2,7 @@ import 'package:solo_social/library.dart';
 import 'package:solo_social/utilities/firestore_control.dart';
 
 class PostFeed extends StatefulWidget {
-  final FirebaseUser user;
+  final User user;
 
   const PostFeed({
     Key key,
@@ -44,7 +44,7 @@ class _PostFeedState extends State<PostFeed> {
               child: CircularProgressIndicator(),
             );
           } else {
-            final _posts = snapshot.data.documents;
+            final _posts = snapshot.data.docs;
             if (_posts.length == 0 || _posts == null) {
               return Center(
                 child: Text(
@@ -67,7 +67,7 @@ class _PostFeedState extends State<PostFeed> {
                   return PostCard(
                     user: widget.user,
                     timeCreated: (_post['TimeCreated'] as Timestamp).toDate(),
-                    postId: _post.documentID,
+                    postId: _post.id,
                     username: _post['Username'],
                     postText: _post['PostText'],
                     tags: _tags == null || _tags.length == 0 ? [] : _tags,

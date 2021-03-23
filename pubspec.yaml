@@ -1,48 +1,50 @@
 name: solo_social
-description: SoloSocial.
-
-version: 0.1.8+11
+description: Solitary Social Media
+version: 0.2.0+12
+publish_to: 'none'
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.2
-  rxdart: ^0.23.1
-  provider: ^4.0.4
-  google_fonts: ^0.3.9
-  firebase_auth: ^0.15.4
+  cupertino_icons: ^1.0.2
+  rxdart: ^0.26.0
+  provider: ^5.0.0
+  google_fonts: ^2.0.0
+  firebase_core: ^1.0.2
+  firebase_auth: ^1.0.1
   google_sign_in: ^4.1.1
-  cloud_firestore: ^0.13.3
-  groovin_widgets: ^1.4.2
-  avataaar_image: ^1.0.8
-  material_design_icons_flutter: ^3.4.4995
-  introduction_screen: ^1.0.7
-  shared_preferences: ^0.5.6+1
+  cloud_firestore: ^1.0.1
+  groovin_widgets: ^2.0.0
+  avataaar_image_2: ^2.0.0-dev.3
+  material_design_icons_flutter: ^4.0.5955
+  introduction_screen: ^2.0.0
+  shared_preferences: ^2.0.5
   flutter_signin_button: ^1.0.0
-  sentry: ^3.0.1
-  timeago: ^2.0.26
+  sentry: ^4.0.6
+  timeago: ^3.0.2
   share: ^0.6.3+5
-  url_launcher: ^5.4.1
+  url_launcher: ^6.0.2
   chips_choice: ^1.0.0
-  path_provider: ^1.6.0
-  intl: ^0.16.1
+  path_provider: ^2.0.1
+  intl: ^0.17.0
   share_extend: ^1.1.1
-  file: ^5.1.0
+  file: ^6.1.0
   path_provider_ex: ^1.0.1
   csv: ^4.0.3
-  package_info: ^0.4.0+13
-  snapfeed: ^0.1.0+1
+  package_info: ^2.0.0
+  wiredash: ^0.6.2
   permission_handler: ^4.2.0+hotfix.3
   firebase_crashlytics: ^0.1.3
   keyboard_dismisser: ^1.0.0
   validated: ^1.0.3
   link_previewer:
     git:
-      url: https://github.com/GroovinChip/flutter-link-previewer
+      url: git@github.com:GroovinChip/flutter-link-previewer.git
+      ref: null_safety
 
 dev_dependencies:
   flutter_test:
