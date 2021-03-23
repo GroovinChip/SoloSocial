@@ -41,3 +41,6 @@ android/app/g-services-codemagic
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 /android/key.properties
+/android/app/solo_social_key.jks
+/android/app/solo_social_key.jks.old
+/android/app/upload_certificate.pem
