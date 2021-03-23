@@ -34,7 +34,7 @@ dependencies:
   share_extend: ^1.1.1
   file: ^6.1.0
   path_provider_ex: ^1.0.1
-  csv: ^4.0.3
+  csv: ^5.0.0
   package_info: ^2.0.0
   wiredash: ^0.6.2
   permission_handler: ^4.2.0+hotfix.3
