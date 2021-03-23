@@ -43,7 +43,7 @@ dependencies:
   validated: ^1.0.3
   link_previewer:
     git:
-      url: git@github.com:GroovinChip/flutter-link-previewer.git
+      url: https://github.com/GroovinChip/flutter-link-previewer.git
       ref: null_safety
 
 dev_dependencies:
