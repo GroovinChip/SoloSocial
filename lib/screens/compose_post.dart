@@ -1,6 +1,6 @@
 import 'package:chips_choice/chips_choice.dart';
 import 'package:solo_social/library.dart';
-import 'package:validated/validated.dart' as validate;
+import 'package:validators/validators.dart';
 
 class ComposePost extends StatefulWidget {
   @override
@@ -275,7 +275,7 @@ class _ComposePostState extends State<ComposePost> {
                                         controller: _sourceLinkController,
                                         keyboardType: TextInputType.url,
                                         validator: (url) {
-                                          if (validate.isURL(url) == true) {
+                                          if (isURL(url)) {
                                             return null;
                                           } else {
                                             return 'Not a valid URL';
@@ -343,7 +343,7 @@ class _ComposePostState extends State<ComposePost> {
                           ),
                         ],
                       ),
-                      validate.isURL(_sourceLinkController.text)
+                      isURL(_sourceLinkController.text)
                           ? Row(
                               children: <Widget>[
                                 SizedBox(width: 18),
@@ -379,7 +379,7 @@ class _ComposePostState extends State<ComposePost> {
     if (value == true) {
       if (postText.isNotEmpty) {
         DateTime _timeCreated = DateTime.now();
-        String _sourceLink = validate.isURL(sourceLink) ? sourceLink : '';
+        String _sourceLink = isURL(sourceLink) ? sourceLink : '';
         try {
           _addPostToFirestore(
             _posts,

@@ -713,13 +713,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.4"
-  validated:
+  validators:
     dependency: "direct main"
     description:
-      name: validated
+      name: validators
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "3.0.0"
   vector_math:
     dependency: transitive
     description:

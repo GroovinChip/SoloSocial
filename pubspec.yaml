@@ -45,7 +45,7 @@ dependencies:
   permission_handler: ^6.1.1
   firebase_crashlytics: ^2.0.0
   keyboard_dismisser: ^2.0.0
-  validated: ^1.0.3
+  validators: ^3.0.0
   link_previewer:
     git:
       url: https://github.com/GroovinChip/flutter-link-previewer.git
