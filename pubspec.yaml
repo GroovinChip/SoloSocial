@@ -19,7 +19,6 @@ dependencies:
   google_sign_in: ^5.0.1
   cloud_firestore: ^1.0.4
   groovin_widgets: ^2.0.0
-  avataaar_image_2: ^2.0.0-dev.3
   material_design_icons_flutter: ^4.0.5955
   introduction_screen: ^2.1.0
   shared_preferences: ^2.0.5
