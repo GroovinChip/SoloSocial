@@ -2,11 +2,11 @@ import 'package:solo_social/library.dart';
 import 'package:solo_social/utilities/firestore_control.dart';
 
 class PostFeed extends StatefulWidget {
-  final User user;
+  final User? user;
 
   const PostFeed({
-    Key key,
-    @required this.user,
+    Key? key,
+    required this.user,
   }) : super(key: key);
 
   @override
@@ -18,7 +18,7 @@ class _PostFeedState extends State<PostFeed> {
   @override
   Widget build(BuildContext context) {
     final _firestoreControl = FirestoreControl(
-      userId: widget.user.uid,
+      userId: widget.user!.uid,
       context: context,
     );
     _firestoreControl.getPosts();
@@ -37,15 +37,15 @@ class _PostFeedState extends State<PostFeed> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestoreControl.posts.orderBy('TimeCreated', descending: true).snapshots(),
+        stream: _firestoreControl.posts!.orderBy('TimeCreated', descending: true).snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(),
             );
           } else {
-            final _posts = snapshot.data.docs;
-            if (_posts.length == 0 || _posts == null) {
+            final _posts = snapshot.data!.docs;
+            if (_posts.isEmpty) {
               return Center(
                 child: Text(
                   'No Posts',

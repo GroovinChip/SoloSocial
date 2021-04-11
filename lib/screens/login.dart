@@ -52,12 +52,12 @@ class _LoginState extends State<Login> {
                   _googleAuth.handleSignIn().then((user) async {
                     _userBloc.user.add(user);
                     final _firestoreControl = FirestoreControl(
-                      userId: user.uid,
+                      userId: user!.uid,
                       context: context,
                     );
                     _firestoreControl.getPosts();
-                    if (_firestoreControl.posts.doc(user.uid).path.isEmpty) {
-                      await _firestoreControl.posts.doc(user.uid).set({});
+                    if (_firestoreControl.posts!.doc(user.uid).path.isEmpty) {
+                      await _firestoreControl.posts!.doc(user.uid).set({});
                     }
                     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
                       statusBarColor: Theme.of(context).canvasColor,

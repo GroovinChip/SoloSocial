@@ -5,8 +5,8 @@ class GoogleAuth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   /// Sign in with Google Auth
-  Future<User> handleSignIn() async {
-    final googleUser = await GoogleSignIn().signIn();
+  Future<User?> handleSignIn() async {
+    final googleUser = await (GoogleSignIn().signIn() as FutureOr<GoogleSignInAccount>);
 
     final googleAuth = await googleUser.authentication;
 
@@ -15,7 +15,7 @@ class GoogleAuth {
       idToken: googleAuth.idToken,
     );
     await FirebaseAuth.instance.signInWithCredential(credential);
-    _auth.currentUser.updateProfile(
+    _auth.currentUser!.updateProfile(
       displayName: googleUser.displayName,
       photoURL: googleUser.photoUrl,
     );

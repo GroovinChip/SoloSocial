@@ -2,9 +2,9 @@ import 'package:solo_social/library.dart';
 
 class FirestoreControl {
   final CollectionReference users = FirebaseFirestore.instance.collection('Users');
-  final String userId;
-  final BuildContext context;
-  CollectionReference posts;
+  final String? userId;
+  final BuildContext? context;
+  CollectionReference? posts;
 
   FirestoreControl({
     this.userId,

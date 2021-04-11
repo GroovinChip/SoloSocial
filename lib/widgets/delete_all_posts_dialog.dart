@@ -2,9 +2,9 @@ import 'package:solo_social/library.dart';
 
 class DeleteAllPostsDialog extends StatelessWidget {
   const DeleteAllPostsDialog({
-    Key key,
-    @required FirestoreControl firestoreControl,
-    @required List<DocumentSnapshot> posts,
+    Key? key,
+    required FirestoreControl firestoreControl,
+    required List<DocumentSnapshot> posts,
   })  : _firestoreControl = firestoreControl,
         _posts = posts,
         super(key: key);

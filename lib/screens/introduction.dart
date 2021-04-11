@@ -11,7 +11,7 @@ class Introduction extends StatefulWidget {
 }
 
 class _IntroductionState extends State<Introduction> {
-  SharedPreferences _prefs;
+  late SharedPreferences _prefs;
   final GoogleAuth _googleAuth = GoogleAuth();
 
   void _setFirstLaunchFlag() async {
@@ -150,7 +150,7 @@ class _IntroductionState extends State<Introduction> {
                     _setFirstLaunchFlag();
                     _userBloc.user.add(user);
                     final _firestoreControl = FirestoreControl(
-                      userId: user.uid,
+                      userId: user!.uid,
                       context: context,
                     );
                     _firestoreControl.getPosts();

@@ -7,7 +7,7 @@ class AuthCheck extends StatefulWidget {
 }
 
 class _AuthCheckState extends State<AuthCheck> {
-  User _user;
+  User? _user;
   bool isLoading = true;
 
   @override
@@ -26,7 +26,7 @@ class _AuthCheckState extends State<AuthCheck> {
     }
 
     _checkForCachedUser();
-    return StreamBuilder<User>(
+    return StreamBuilder<User?>(
       stream: _userBloc.currentUser,
       builder: (context, snapshot) {
         if (!snapshot.hasData && isLoading == true) {

@@ -10,6 +10,8 @@ Future<void> main() async {
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
+  await ExportUtility.initialize();
+
   await Sentry.init(
     (options) {
       options.dsn = ApiKeys.sentryDsn;
@@ -25,24 +27,9 @@ class SoloSocialApp extends StatefulWidget {
 
 class _SoloSocialAppState extends State<SoloSocialApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
-  PackageInfo _packageInfo;
-  String appName;
-  String packageName;
-  String version;
-  String buildNumber;
-
-  /// Retrieve information about this app for display
-  void _getPackageInfo() async {
-    _packageInfo = await PackageInfo.fromPlatform();
-    appName = _packageInfo.appName;
-    packageName = _packageInfo.packageName;
-    version = _packageInfo.version;
-    buildNumber = _packageInfo.buildNumber;
-  }
 
   @override
   void initState() {
-    _getPackageInfo();
     super.initState();
   }
 
@@ -51,7 +38,6 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
     return MultiProvider(
       providers: [
         Provider<Bloc>(create: (_) => Bloc()),
-        Provider<PackageInfo>(create: (_) => _packageInfo),
       ],
       child: Wiredash(
         navigatorKey: _navigatorKey,

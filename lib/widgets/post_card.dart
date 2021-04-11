@@ -3,17 +3,17 @@ import 'package:solo_social/utilities/firestore_control.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostCard extends StatefulWidget {
-  final User user;
-  final DateTime timeCreated;
-  final String postId;
-  final String username;
-  final String postText;
-  final List<String> tags;
-  final String sourceLink;
-  final FirestoreControl firestoreControl;
+  final User? user;
+  final DateTime? timeCreated;
+  final String? postId;
+  final String? username;
+  final String? postText;
+  final List<String>? tags;
+  final String? sourceLink;
+  final FirestoreControl? firestoreControl;
 
   const PostCard({
-    Key key,
+    Key? key,
     this.user,
     this.timeCreated,
     this.postId,
@@ -32,10 +32,10 @@ class _PostCardState extends State<PostCard> {
   void _handleMenuSelection(String selection) {
     switch (selection) {
       case 'Share':
-        Share.share(widget.postText, subject: 'Check out my post from SoloSocial');
+        Share.share(widget.postText!, subject: 'Check out my post from SoloSocial');
         break;
       case 'Delete':
-        widget.firestoreControl.posts.doc(widget.postId).delete();
+        widget.firestoreControl!.posts!.doc(widget.postId).delete();
         break;
     }
   }
@@ -51,17 +51,17 @@ class _PostCardState extends State<PostCard> {
         children: <Widget>[
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(widget.user.photoURL),
+              backgroundImage: NetworkImage(widget.user!.photoURL!),
             ),
             title: Text(
-              widget.username,
+              widget.username!,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
             subtitle: Text(
-              timeago.format(widget.timeCreated),
+              timeago.format(widget.timeCreated!),
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -109,26 +109,26 @@ class _PostCardState extends State<PostCard> {
           ),
           ListTile(
             title: Text(
-              widget.postText,
+              widget.postText!,
               style: TextStyle(
                 fontSize: 18,
                 color: Colors.white,
               ),
             ),
           ),
-          widget.tags.length > 0
+          widget.tags!.length > 0
               ? Padding(
                   padding: const EdgeInsets.only(left: 12, right: 12),
                   child: Container(
                     height: 50,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: widget.tags.length,
+                      itemCount: widget.tags!.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: Chip(
-                            label: Text(widget.tags[index]),
+                            label: Text(widget.tags![index]),
                             backgroundColor: Theme.of(context).accentColor,
                           ),
                         );
@@ -137,11 +137,11 @@ class _PostCardState extends State<PostCard> {
                   ),
                 )
               : Container(),
-          widget.tags.length > 0 ? SizedBox(height: 12) : Container(),
+          widget.tags!.length > 0 ? SizedBox(height: 12) : Container(),
           widget.sourceLink == 'NoSource'
               ? Container()
               : LinkPreviewer(
-                  link: widget.sourceLink,
+                  link: widget.sourceLink!,
                   defaultPlaceholderColor: Colors.indigo[300],
                   placeholder: Text(
                     'Loading link preview',

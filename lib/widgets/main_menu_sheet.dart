@@ -4,11 +4,11 @@ import 'package:solo_social/utilities/firestore_control.dart';
 import 'package:solo_social/widgets/delete_all_posts_dialog.dart';
 
 class MainMenuSheet extends StatefulWidget {
-  final User user;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final User? user;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
   MainMenuSheet({
-    @required this.user,
+    required this.user,
     this.scaffoldKey,
   });
 
@@ -18,50 +18,43 @@ class MainMenuSheet extends StatefulWidget {
 
 class _MainMenuSheetState extends State<MainMenuSheet> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  PermissionStatus storagePermission;
-  List<StorageInfo> _storageInfo = [];
-
-  Future<void> _getStorageInfo() async {
-    List<StorageInfo> storageInfo;
-    try {
-      storageInfo = await PathProviderEx.getStorageInfo();
-    } on PlatformException {}
-
-    if (!mounted) return;
-
-    setState(() {
-      _storageInfo = storageInfo;
-    });
-  }
-
-  Future<void> checkStoragePermission() async {
-    storagePermission = await Permission.storage.request();
-  }
+  PackageInfo? _packageInfo;
+  PermissionStatus? storagePermission;
 
   @override
   void initState() {
-    _getStorageInfo();
     super.initState();
+    _getPackageInfo();
+    checkStoragePermission();
+  }
+
+  /// Retrieve information about this app for display
+  Future<void> _getPackageInfo() async {
+    _packageInfo = await PackageInfo.fromPlatform();
+  }
+
+  Future<void> checkStoragePermission() async {
+    await Permission.storage.status.then((value) {
+      setState(() => storagePermission = value);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final _packageInfo = Provider.of<PackageInfo>(context);
     final _firestoreControl = FirestoreControl(
-      userId: widget.user.uid,
+      userId: widget.user!.uid,
       context: context,
     );
     _firestoreControl.getPosts();
-    final ExportPosts _exportPosts = ExportPosts(_storageInfo);
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestoreControl.posts.snapshots(),
+      stream: _firestoreControl.posts!.snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
           );
         } else {
-          final _posts = snapshot.data.docs;
+          final _posts = snapshot.data!.docs;
           return Theme(
             data: ThemeData.dark(),
             child: Container(
@@ -70,18 +63,15 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8),
-                    child: ModalDrawerHandle(
-                        /*handleWidth: 50,
-                handleHeight: 2,*/
-                        ),
+                    child: ModalDrawerHandle(),
                   ),
                   ListTile(
                     leading: CircleAvatar(
                       backgroundColor: Colors.white,
-                      backgroundImage: NetworkImage(widget.user.photoURL),
+                      backgroundImage: NetworkImage(widget.user!.photoURL!),
                     ),
-                    title: Text(widget.user.displayName),
-                    subtitle: Text(widget.user.email),
+                    title: Text(widget.user!.displayName!),
+                    subtitle: Text(widget.user!.email!),
                     trailing: OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(
@@ -91,7 +81,12 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                           borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      child: Text('Sign Out'),
+                      child: Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
                       onPressed: () {
                         _auth.signOut();
                         SystemChrome.setSystemUIOverlayStyle(
@@ -115,19 +110,18 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                       ? ListTile(
                           leading: Icon(MdiIcons.cloudDownloadOutline),
                           title: Text('Download Posts'),
-                          onTap: () {
+                          onTap: () async {
                             checkStoragePermission();
-                            if (storagePermission != null &&
-                                storagePermission.isGranted) {
-                              _exportPosts
-                                  .postsToCsv(snapshot.data)
+                            if (storagePermission!.isGranted) {
+                              ExportUtility.instance
+                                  .postsToCsv(snapshot.data!)
                                   .catchError((error) async {
                                 await Sentry.captureException(error);
                               });
                               Navigator.pop(context);
-                              _exportPosts.shareFile();
+                              ExportUtility.instance.shareFile();
                             } else {
-                              // snackbar?
+                              await Permission.storage.request();
                             }
                           },
                         )
@@ -153,14 +147,14 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                     title: Text('Send Feedback'),
                     onTap: () {
                       Navigator.pop(context);
-                      Wiredash.of(context).show();
+                      Wiredash.of(context)!.show();
                     },
                   ),
                   Divider(height: 0),
                   ListTile(
                     leading: Icon(MdiIcons.informationVariant),
-                    title: Text('${_packageInfo.appName}'),
-                    subtitle: Text('Version ${_packageInfo.version}'),
+                    title: Text('${_packageInfo!.appName}'),
+                    subtitle: Text('Version ${_packageInfo!.version}'),
                   ),
                 ],
               ),

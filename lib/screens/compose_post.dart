@@ -27,7 +27,7 @@ class _ComposePostState extends State<ComposePost> {
   @override
   Widget build(BuildContext context) {
     final _userBloc = Provider.of<Bloc>(context);
-    return StreamBuilder<User>(
+    return StreamBuilder<User?>(
       stream: _userBloc.currentUser,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -35,7 +35,7 @@ class _ComposePostState extends State<ComposePost> {
             child: CircularProgressIndicator(),
           );
         } else {
-          final _user = snapshot.data;
+          final _user = snapshot.data!;
           final _firestoreControl = FirestoreControl(
             userId: _user.uid,
             context: context,
@@ -90,7 +90,7 @@ class _ComposePostState extends State<ComposePost> {
                           Padding(
                             padding: const EdgeInsets.only(bottom: 134),
                             child: CircleAvatar(
-                              backgroundImage: NetworkImage(_user.photoURL),
+                              backgroundImage: NetworkImage(_user.photoURL!),
                               backgroundColor: Theme.of(context).accentColor,
                             ),
                           ),
@@ -153,14 +153,22 @@ class _ComposePostState extends State<ComposePost> {
                           OutlinedButton.icon(
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
-                                color: Colors.grey[400],
+                                color: Colors.grey.shade400,
                               ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(24),
                               ),
                             ),
-                            label: Text('Add Tag'),
-                            icon: Icon(MdiIcons.tagPlusOutline),
+                            label: Text(
+                              'Add Tag',
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                            icon: Icon(
+                              MdiIcons.tagPlusOutline,
+                              color: Colors.grey.shade400,
+                            ),
                             onPressed: () => showDialog(
                               context: context,
                               builder: (_) => Theme(
@@ -244,11 +252,19 @@ class _ComposePostState extends State<ComposePost> {
                         children: <Widget>[
                           SizedBox(width: 18),
                           OutlinedButton.icon(
-                            icon: Icon(Icons.link),
-                            label: Text('Refer to Source'),
+                            icon: Icon(
+                              Icons.link,
+                              color: Colors.grey.shade400,
+                            ),
+                            label: Text(
+                              'Refer to Source',
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
-                                color: Colors.grey[400],
+                                color: Colors.grey.shade400,
                               ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(24),
@@ -318,9 +334,9 @@ class _ComposePostState extends State<ComposePost> {
                                             // add tag indicating valid source link
                                             // ensure tag only is entered once
                                             print(_sourceLinkFormKey
-                                                .currentState
+                                                .currentState!
                                                 .validate());
-                                            if (_sourceLinkFormKey.currentState
+                                            if (_sourceLinkFormKey.currentState!
                                                 .validate()) {
                                               if (_sourceLinkController
                                                       .text.isNotEmpty &&
@@ -371,7 +387,7 @@ class _ComposePostState extends State<ComposePost> {
   void _validatePost(
     bool value,
     String postText,
-    CollectionReference _posts,
+    CollectionReference? _posts,
     User _user,
     String sourceLink,
     BuildContext context,
@@ -382,7 +398,7 @@ class _ComposePostState extends State<ComposePost> {
         String _sourceLink = isURL(sourceLink) ? sourceLink : '';
         try {
           _addPostToFirestore(
-            _posts,
+            _posts!,
             _user,
             postText,
             _timeCreated,

@@ -83,7 +83,7 @@ class Landing extends StatelessWidget {
                       child: Text('Sign Up with Email'),
                       style: OutlinedButton.styleFrom(
                         side: BorderSide(
-                          color: Colors.grey[400],
+                          color: Colors.grey[400]!,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24),
