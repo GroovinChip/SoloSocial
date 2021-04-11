@@ -35,7 +35,8 @@ dependencies:
   intl: ^0.17.0
   share_extend: ^2.0.0
   file: ^6.1.0
-  path_provider_ex: ^1.0.1
+  path_provider_ex:
+    git: https://github.com/AmudAnan/flutter_path_provider_ex.git
   csv: ^5.0.0
   package_info: ^2.0.0
   wiredash: ^0.6.2

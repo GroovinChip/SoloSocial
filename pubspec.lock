@@ -415,9 +415,11 @@ packages:
   path_provider_ex:
     dependency: "direct main"
     description:
-      name: path_provider_ex
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "620bc6f6cfdf42c2b83d9eebf50e0bcee404ca6a"
+      url: "https://github.com/AmudAnan/flutter_path_provider_ex.git"
+    source: git
     version: "1.0.1"
   path_provider_linux:
     dependency: transitive
