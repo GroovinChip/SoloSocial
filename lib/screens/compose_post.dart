@@ -150,15 +150,17 @@ class _ComposePostState extends State<ComposePost> {
                       Row(
                         children: <Widget>[
                           SizedBox(width: 18),
-                          OutlineButton.icon(
+                          OutlinedButton.icon(
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color: Colors.grey[400],
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                            ),
                             label: Text('Add Tag'),
                             icon: Icon(MdiIcons.tagPlusOutline),
-                            borderSide: BorderSide(
-                              color: Colors.grey[400],
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24),
-                            ),
                             onPressed: () => showDialog(
                               context: context,
                               builder: (_) => Theme(
@@ -241,14 +243,16 @@ class _ComposePostState extends State<ComposePost> {
                       Row(
                         children: <Widget>[
                           SizedBox(width: 18),
-                          OutlineButton.icon(
+                          OutlinedButton.icon(
                             icon: Icon(Icons.link),
                             label: Text('Refer to Source'),
-                            borderSide: BorderSide(
-                              color: Colors.grey[400],
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(24),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color: Colors.grey[400],
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
                             ),
                             onPressed: () => showDialog(
                               context: context,
@@ -389,7 +393,7 @@ class _ComposePostState extends State<ComposePost> {
           print(e);
         }
       } else {
-        _scaffoldKey.currentState.showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
               children: <Widget>[

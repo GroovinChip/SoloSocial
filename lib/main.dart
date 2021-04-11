@@ -8,7 +8,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
   await Sentry.init(
     (options) {
@@ -75,7 +75,9 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
             textTheme: GoogleFonts.openSansTextTheme(
               Theme.of(context).textTheme,
             ),
-            textSelectionHandleColor: Colors.indigoAccent,
+            textSelectionTheme: TextSelectionThemeData(
+              selectionHandleColor: Colors.indigoAccent,
+            ),
             inputDecorationTheme: InputDecorationTheme(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),

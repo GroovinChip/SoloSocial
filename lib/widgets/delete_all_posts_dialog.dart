@@ -24,7 +24,7 @@ class DeleteAllPostsDialog extends StatelessWidget {
         title: Text('Delete All Posts?'),
         content: Text('Are you sure you want to delete all your posts?'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text('Yes'),
             onPressed: () async {
               await _firestoreControl.deleteAllPosts(_posts);

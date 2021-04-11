@@ -34,13 +34,8 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
     });
   }
 
-  void checkStoragePermission() async {
-    Map<PermissionGroup, PermissionStatus> permissions =
-        await PermissionHandler().requestPermissions(
-      [PermissionGroup.storage],
-    );
-    storagePermission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
+  Future<void> checkStoragePermission() async {
+    storagePermission = await Permission.storage.request();
   }
 
   @override
@@ -87,12 +82,15 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                     ),
                     title: Text(widget.user.displayName),
                     subtitle: Text(widget.user.email),
-                    trailing: OutlineButton(
-                      borderSide: BorderSide(
-                        color: Colors.white,
+                    trailing: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(
+                          color: Colors.white,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                       ),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25)),
                       child: Text('Sign Out'),
                       onPressed: () {
                         _auth.signOut();
@@ -120,7 +118,7 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                           onTap: () {
                             checkStoragePermission();
                             if (storagePermission != null &&
-                                storagePermission.value == 2) {
+                                storagePermission.isGranted) {
                               _exportPosts
                                   .postsToCsv(snapshot.data)
                                   .catchError((error) async {
