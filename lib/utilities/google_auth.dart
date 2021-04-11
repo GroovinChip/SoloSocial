@@ -5,20 +5,21 @@ class GoogleAuth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   /// Sign in with Google Auth
-  Future<User> handleSignIn() async {
-    final googleUser = await GoogleSignIn().signIn();
+  Future<void> handleSignIn() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    final googleAuth = await googleUser.authentication;
+    final googleAuth = await googleUser!.authentication;
 
-    final credential = GoogleAuthProvider.credential(
+    final googleAuthCredential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    await FirebaseAuth.instance.signInWithCredential(credential);
-    _auth.currentUser.updateProfile(
+
+    await FirebaseAuth.instance.signInWithCredential(googleAuthCredential);
+
+    _auth.currentUser!.updateProfile(
       displayName: googleUser.displayName,
       photoURL: googleUser.photoUrl,
     );
-    return _auth.currentUser;
   }
 }

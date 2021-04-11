@@ -17,12 +17,12 @@ class PostSearch extends SearchDelegate {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    return null;
+    return [];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
-    return null;
+    return BackButton();
   }
 
   @override

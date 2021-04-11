@@ -5,7 +5,6 @@ export 'package:google_sign_in/google_sign_in.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:groovin_widgets/groovin_widgets.dart';
 export 'package:google_fonts/google_fonts.dart';
-export 'package:avataaar_image_2/avataaar_image_2.dart';
 export 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 export 'package:introduction_screen/introduction_screen.dart';
 export 'package:flutter_signin_button/flutter_signin_button.dart';

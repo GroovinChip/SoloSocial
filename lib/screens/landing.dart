@@ -31,12 +31,14 @@ class Landing extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: RaisedButton(
-                      color: Theme.of(context).accentColor,
-                      child: Text('Sign In'),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).accentColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
+                      child: Text('Sign In'),
                       onPressed: () {},
                     ),
                   ),
@@ -49,13 +51,15 @@ class Landing extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: RaisedButton.icon(
+                    child: ElevatedButton.icon(
                       icon: Icon(MdiIcons.google),
-                      color: Theme.of(context).accentColor,
-                      label: Text('Sign In with Google'),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).accentColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
                       ),
+                      label: Text('Sign In with Google'),
                       onPressed: () {},
                     ),
                   ),
@@ -75,13 +79,15 @@ class Landing extends StatelessWidget {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
-                    child: OutlineButton(
+                    child: OutlinedButton(
                       child: Text('Sign Up with Email'),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      borderSide: BorderSide(
-                        color: Colors.grey[300],
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(
+                          color: Colors.grey[400]!,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
                       ),
                       onPressed: () {},
                     ),

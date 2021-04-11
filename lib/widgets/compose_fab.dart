@@ -2,7 +2,7 @@ import 'package:solo_social/library.dart';
 
 class ComposeFab extends StatelessWidget {
   const ComposeFab({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

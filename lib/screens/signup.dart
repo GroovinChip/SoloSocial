@@ -39,7 +39,9 @@ class _SignupState extends State<Signup> {
                   ),
                 ],
               ),
-              Container(height: MediaQuery.of(context).size.height / 5,),
+              Container(
+                height: MediaQuery.of(context).size.height / 5,
+              ),
               Padding(
                 padding: const EdgeInsets.only(left: 16, right: 16),
                 child: TextField(
@@ -85,12 +87,14 @@ class _SignupState extends State<Signup> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16, right: 16),
-                      child: RaisedButton(
-                        color: Theme.of(context).accentColor,
-                        child: Text('Confirm'),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).accentColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
+                          ),
                         ),
+                        child: Text('Confirm'),
                         onPressed: () {},
                       ),
                     ),

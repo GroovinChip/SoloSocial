@@ -1,30 +1,40 @@
-import 'package:solo_social/library.dart';
-import 'package:path/path.dart' as p;
 import 'package:csv/csv.dart' as csv;
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:solo_social/library.dart';
 
-class ExportPosts {
-  final DateFormat dateFormat = DateFormat.yMd().add_jm();
-  final List<StorageInfo> storageInfo;
+final DateFormat dateFormat = DateFormat.yMd().add_jm();
 
-  ExportPosts(
-    this.storageInfo,
-  );
+class ExportUtility {
+  ExportUtility._();
 
-  Future<String> get localPath async {
-    final externalDir = storageInfo[0];
-    final dataDir = Directory(p.join(externalDir.rootDir, 'SoloSocial'));
+  static final ExportUtility instance = ExportUtility._();
+
+  static Future<void> initialize() async {
+    if (Platform.isAndroid) {
+      _storageDir = await path_provider.getExternalStorageDirectory();
+    } else {
+      _storageDir = await path_provider.getApplicationDocumentsDirectory();
+    }
+  }
+
+  static Directory? _storageDir;
+
+  static Future<String> get _localPath async {
+    final dataDir = Directory(p.join(_storageDir!.path, 'SoloSocial'));
     await dataDir.create(recursive: true);
     return dataDir.path;
   }
 
-  Future<File> get localFile {
-    return localPath.then((path) => File(p.join(path, 'SoloSocial Post Records.csv')));
+  static Future<File> get _localFile {
+    return _localPath
+        .then((path) => File(p.join(path, 'SoloSocial Post Records.csv')));
   }
 
   /// Export user's posts to a readable CSV file
   Future<void> postsToCsv(QuerySnapshot posts) async {
     // Headers
-    List<List<String>> data = [
+    List<List<String?>> data = [
       ['Username', 'Time Created', 'Post Text', 'Tags', 'Source Link'],
     ];
 
@@ -38,7 +48,7 @@ class ExportPosts {
         post['SourceLink'],
       ]);
     }
-    final file = await localFile;
+    final file = await _localFile;
 
     // Convert data to csv format
     final csvData = csv.ListToCsvConverter().convert(data);
@@ -47,8 +57,8 @@ class ExportPosts {
     await file.writeAsString(csvData, flush: true);
   }
 
-  void shareFile() async {
-    File postRecords = await localFile;
+  Future<void> shareFile() async {
+    File postRecords = await _localFile;
     ShareExtend.share(postRecords.path, 'file');
   }
 }
