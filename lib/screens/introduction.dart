@@ -146,31 +146,39 @@ class _IntroductionState extends State<Introduction> {
               bodyWidget: SignInButton(
                 Buttons.Google,
                 onPressed: () async {
-                  _googleAuth.handleSignIn().then((user) async {
+                  _googleAuth.handleSignIn().then((_) async {
                     _setFirstLaunchFlag();
-                    _userBloc.user.add(user);
-                    final _firestoreControl = FirestoreControl(
-                      userId: user!.uid,
-                      context: context,
-                    );
-                    _firestoreControl.getPosts();
-                    if (_firestoreControl.users.doc(user.uid).path.isEmpty) {
-                      await _firestoreControl.users.doc(user.uid).set({});
-                    }
-                    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                      statusBarColor: Theme.of(context).canvasColor,
-                      statusBarBrightness: Brightness.light,
-                      systemNavigationBarColor: Theme.of(context).primaryColor,
-                      systemNavigationBarIconBrightness: Brightness.light,
-                    ));
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => PostFeed(
-                          user: user,
+                    if (FirebaseAuth.instance.currentUser != null) {
+                      _userBloc.user.add(FirebaseAuth.instance.currentUser);
+                      final _firestoreControl = FirestoreControl(
+                        userId: FirebaseAuth.instance.currentUser!.uid,
+                        context: context,
+                      );
+                      _firestoreControl.getPosts();
+                      if (_firestoreControl.posts!
+                          .doc(FirebaseAuth.instance.currentUser!.uid)
+                          .path
+                          .isEmpty) {
+                        await _firestoreControl.posts!
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .set({});
+                      }
+                      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+                        statusBarColor: Theme.of(context).canvasColor,
+                        statusBarBrightness: Brightness.light,
+                        systemNavigationBarColor:
+                            Theme.of(context).primaryColor,
+                        systemNavigationBarIconBrightness: Brightness.light,
+                      ));
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => PostFeed(
+                            user: FirebaseAuth.instance.currentUser!,
+                          ),
                         ),
-                      ),
-                      (route) => false,
-                    );
+                        (route) => false,
+                      );
+                    }
                   }).catchError((exc) async {
                     print('GoogleAuth error: $exc');
                     await Sentry.captureException(exc);
