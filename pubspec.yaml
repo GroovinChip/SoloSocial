@@ -36,7 +36,9 @@ dependencies:
   share_extend: ^2.0.0
   file: ^6.1.0
   path_provider_ex:
-    git: https://github.com/AmudAnan/flutter_path_provider_ex.git
+    git:
+      url: https://github.com/atrope/flutter_path_provider_ex.git
+      ref: feature/nullsafemigration
   csv: ^5.0.0
   package_info: ^2.0.0
   wiredash: ^0.6.2

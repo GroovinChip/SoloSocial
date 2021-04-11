@@ -416,11 +416,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: "620bc6f6cfdf42c2b83d9eebf50e0bcee404ca6a"
-      url: "https://github.com/AmudAnan/flutter_path_provider_ex.git"
+      ref: "feature/nullsafemigration"
+      resolved-ref: "5538b01b928264db89d2b4f98eb9887c089fe3da"
+      url: "https://github.com/atrope/flutter_path_provider_ex.git"
     source: git
-    version: "1.0.1"
+    version: "2.0.0"
   path_provider_linux:
     dependency: transitive
     description:
