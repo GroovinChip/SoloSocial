@@ -75,7 +75,7 @@ class _LoginState extends State<Login> {
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder: (context) => PostFeed(
-                            user: FirebaseAuth.instance.currentUser!,
+                            user: FirebaseAuth.instance.currentUser,
                           ),
                         ),
                         (route) => false,

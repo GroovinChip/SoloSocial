@@ -29,7 +29,7 @@ class _AuthCheckState extends State<AuthCheck> {
     return StreamBuilder<User?>(
       stream: _userBloc.currentUser,
       builder: (context, snapshot) {
-        if (!snapshot.hasData && isLoading == true) {
+        if (!snapshot.hasData && isLoading) {
           return Container(color: Theme.of(context).canvasColor,);
         } else {
           if (_user != null) {
