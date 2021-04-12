@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "176369690440",
+    "firebase_url": "https://solosocial-756bf.firebaseio.com",
+    "project_id": "solosocial-756bf",
+    "storage_bucket": "solosocial-756bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176369690440:android:dabbad6bad506f999cb57d",
+        "android_client_info": {
+          "package_name": "com.groovinchip.solo_social"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176369690440-4ab52dhc0k8c8h4ec301orkaguroun01.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.groovinchip.solo_social",
+            "certificate_hash": "cc96f4cf270b97de266ad1dd78f64d07d48212ad"
+          }
+        },
+        {
+          "client_id": "176369690440-ams0q9kkqig0039shvoim3pdhgv63d35.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.groovinchip.solo_social",
+            "certificate_hash": "c03206a7e0a83ed01de49de921899de6bc3b3777"
+          }
+        },
+        {
+          "client_id": "176369690440-avg0npkr7np4u1i4omdil66svo4dso5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.groovinchip.solo_social",
+            "certificate_hash": "ffae666c77cb4019976e48a903cc3c235875f9f6"
+          }
+        },
+        {
+          "client_id": "176369690440-odl2b743hr2m9hf2c2075pmg583p95gb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.groovinchip.solo_social",
+            "certificate_hash": "efc1f1046b792368f5ddab5e47f11de68c0a1f8d"
+          }
+        },
+        {
+          "client_id": "176369690440-5chf74nnnct8hkjjqb62gv5e4i4ia2p1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRoda7Yw5vuCWeDzU1mS9fD2dzIQy06cM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176369690440-5chf74nnnct8hkjjqb62gv5e4i4ia2p1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "176369690440-3ujk1tv5en0870hsreupum7toh0n6ng6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.groovinchip.soloSocial"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
