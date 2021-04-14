@@ -68,6 +68,12 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
             textSelectionTheme: TextSelectionThemeData(
               selectionHandleColor: Colors.indigoAccent,
             ),
+            dialogTheme: DialogTheme(
+              backgroundColor: Colors.indigo,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
             inputDecorationTheme: InputDecorationTheme(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),

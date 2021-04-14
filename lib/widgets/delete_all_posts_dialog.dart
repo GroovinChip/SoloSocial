@@ -5,7 +5,7 @@ class DeleteAllPostsDialog extends StatelessWidget {
     Key? key,
     required FirestoreControl firestoreControl,
     required List<DocumentSnapshot> posts,
-  })  : _firestoreControl = firestoreControl,
+  })   : _firestoreControl = firestoreControl,
         _posts = posts,
         super(key: key);
 
@@ -14,25 +14,22 @@ class DeleteAllPostsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData.dark(),
-      child: AlertDialog(
-        backgroundColor: Theme.of(context).primaryColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        title: Text('Delete All Posts?'),
-        content: Text('Are you sure you want to delete all your posts?'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Yes'),
-            onPressed: () async {
-              await _firestoreControl.deleteAllPosts(_posts);
-              Navigator.pop(context);
-            },
+    return AlertDialog(
+      content: Text('Are you sure you want to delete all your posts?'),
+      actions: [
+        TextButton(
+          child: Text(
+            'YES',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
-        ],
-      ),
+          onPressed: () async {
+            await _firestoreControl.deleteAllPosts(_posts);
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }
