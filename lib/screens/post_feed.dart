@@ -32,11 +32,9 @@ class _PostFeedState extends State<PostFeed> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Theme.of(context).canvasColor,
           title: Text(
             'Posts',
-            style: GoogleFonts.openSans(
+            style: TextStyle(
               fontSize: 26,
               fontWeight: FontWeight.bold,
               letterSpacing: 1,
@@ -44,7 +42,9 @@ class _PostFeedState extends State<PostFeed> {
           ),
         ),
         body: StreamBuilder<QuerySnapshot>(
-          stream: _firestoreControl.posts!.orderBy('TimeCreated', descending: true).snapshots(),
+          stream: _firestoreControl.posts!
+              .orderBy('TimeCreated', descending: true)
+              .snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -54,12 +54,7 @@ class _PostFeedState extends State<PostFeed> {
               final _posts = snapshot.data!.docs;
               if (_posts.isEmpty) {
                 return Center(
-                  child: Text(
-                    'No Posts',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: Text('No Posts'),
                 );
               } else {
                 return ListView.builder(
@@ -69,7 +64,8 @@ class _PostFeedState extends State<PostFeed> {
                     final _post = _posts[index];
                     var _tags;
                     if (_post['Tags'] != null) {
-                      _tags = (jsonDecode(_post['Tags']) as List).cast<String>();
+                      _tags =
+                          (jsonDecode(_post['Tags']) as List).cast<String>();
                     }
                     return PostCard(
                       user: widget.user,
@@ -78,7 +74,9 @@ class _PostFeedState extends State<PostFeed> {
                       username: _post['Username'],
                       postText: _post['PostText'],
                       tags: _tags == null || _tags.length == 0 ? [] : _tags,
-                      sourceLink: _post['SourceLink'].toString().isEmpty ? 'NoSource' : _post['SourceLink'],
+                      sourceLink: _post['SourceLink'].toString().isEmpty
+                          ? 'NoSource'
+                          : _post['SourceLink'],
                       firestoreControl: _firestoreControl,
                     );
                   },
@@ -94,7 +92,7 @@ class _PostFeedState extends State<PostFeed> {
           child: Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
+              children: [
                 Semantics(
                   label: 'Open Menu',
                   child: IconButton(
@@ -107,21 +105,19 @@ class _PostFeedState extends State<PostFeed> {
                           topLeft: Radius.circular(12),
                         ),
                       ),
-                      backgroundColor: Theme.of(context).canvasColor,
                       builder: (_) => MainMenuSheet(
                         user: widget.user,
-                        scaffoldKey: _scaffoldKey,
                       ),
                     ),
                   ),
                 ),
                 /*IconButton(
-                          icon: Icon(Icons.search),
-                          onPressed: () => showSearch(
-                            context: context,
-                            delegate: PostSearch(),
-                          ),
-                        ),*/
+                  icon: Icon(Icons.search),
+                  onPressed: () => showSearch(
+                    context: context,
+                    delegate: PostSearch(),
+                  ),
+                ),*/
               ],
             ),
           ),

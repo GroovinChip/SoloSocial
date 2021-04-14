@@ -6,11 +6,9 @@ import 'package:solo_social/widgets/delete_all_posts_dialog.dart';
 class MainMenuSheet extends StatefulWidget {
   MainMenuSheet({
     required this.user,
-    this.scaffoldKey,
   });
 
   final User? user;
-  final GlobalKey<ScaffoldState>? scaffoldKey;
 
   @override
   _MainMenuSheetState createState() => _MainMenuSheetState();
