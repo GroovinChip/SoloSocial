@@ -53,6 +53,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  dart_code_metrics: ^3.0.0
 
 flutter:
   uses-material-design: true

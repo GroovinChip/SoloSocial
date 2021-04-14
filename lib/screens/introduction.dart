@@ -173,7 +173,7 @@ class _IntroductionState extends State<Introduction> {
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder: (context) => PostFeed(
-                            user: FirebaseAuth.instance.currentUser!,
+                            user: FirebaseAuth.instance.currentUser,
                           ),
                         ),
                         (route) => false,
@@ -189,12 +189,12 @@ class _IntroductionState extends State<Introduction> {
           ],
           curve: Curves.easeInCubic,
           animationDuration: 600,
-          onDone: () {},
+          //onDone: () {},
           done: Container(),
           showNextButton: true,
           showSkipButton: true,
           skip: Text('Skip'),
-          onSkip: () {},
+          //onSkip: () {},
           next: Text('Next'),
           dotsDecorator: DotsDecorator(
             activeColor: Theme.of(context).accentColor,

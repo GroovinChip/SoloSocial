@@ -68,12 +68,13 @@ class _ComposePostState extends State<ComposePost> {
                       backgroundColor: Theme.of(context).accentColor,
                       onSelected: (value) {
                         _validatePost(
-                            value,
-                            _postTextController.text,
-                            _firestoreControl.posts,
-                            _user,
-                            _sourceLinkController.text,
-                            context);
+                          value,
+                          _postTextController.text,
+                          _firestoreControl.posts,
+                          _user,
+                          _sourceLinkController.text,
+                          context,
+                        );
                       },
                       selected: false,
                     ),
@@ -175,7 +176,8 @@ class _ComposePostState extends State<ComposePost> {
                                 data: ThemeData.dark(),
                                 child: SimpleDialog(
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(14)),
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
                                   backgroundColor:
                                       Theme.of(context).canvasColor,
                                   title: Text(
@@ -214,12 +216,13 @@ class _ComposePostState extends State<ComposePost> {
                                               Theme.of(context).accentColor,
                                           selected: false,
                                           onSelected: (value) {
-                                            if (value == true &&
+                                            if (value &&
                                                 _addTagController
                                                     .text.isNotEmpty) {
                                               setState(() {
                                                 _options.add(
-                                                    _addTagController.text);
+                                                  _addTagController.text,
+                                                );
                                               });
                                               Navigator.pop(context);
                                             }
@@ -276,7 +279,8 @@ class _ComposePostState extends State<ComposePost> {
                                 data: ThemeData.dark(),
                                 child: SimpleDialog(
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(14)),
+                                    borderRadius: BorderRadius.circular(14),
+                                  ),
                                   backgroundColor:
                                       Theme.of(context).canvasColor,
                                   title: Text(
@@ -368,7 +372,7 @@ class _ComposePostState extends State<ComposePost> {
                                   style: TextStyle(
                                     color: Colors.white,
                                   ),
-                                )
+                                ),
                               ],
                             )
                           : Container(),
@@ -392,7 +396,7 @@ class _ComposePostState extends State<ComposePost> {
     String sourceLink,
     BuildContext context,
   ) {
-    if (value == true) {
+    if (value) {
       if (postText.isNotEmpty) {
         DateTime _timeCreated = DateTime.now();
         String _sourceLink = isURL(sourceLink) ? sourceLink : '';
