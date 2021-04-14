@@ -2,12 +2,12 @@ import 'package:solo_social/library.dart';
 import 'package:solo_social/utilities/firestore_control.dart';
 
 class PostFeed extends StatefulWidget {
-  final User? user;
-
   const PostFeed({
     Key? key,
     required this.user,
   }) : super(key: key);
+
+  final User? user;
 
   @override
   _PostFeedState createState() => _PostFeedState();

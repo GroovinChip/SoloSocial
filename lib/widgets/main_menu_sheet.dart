@@ -4,13 +4,13 @@ import 'package:solo_social/utilities/firestore_control.dart';
 import 'package:solo_social/widgets/delete_all_posts_dialog.dart';
 
 class MainMenuSheet extends StatefulWidget {
-  final User? user;
-  final GlobalKey<ScaffoldState>? scaffoldKey;
-
   MainMenuSheet({
     required this.user,
     this.scaffoldKey,
   });
+
+  final User? user;
+  final GlobalKey<ScaffoldState>? scaffoldKey;
 
   @override
   _MainMenuSheetState createState() => _MainMenuSheetState();
