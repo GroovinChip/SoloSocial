@@ -58,6 +58,9 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
               ),
               color: Colors.indigo.shade300,
             ),
+            popupMenuTheme: PopupMenuThemeData(
+              color: Colors.indigo.shade700,
+            ),
             canvasColor: Colors.indigo.shade800,
             textTheme: GoogleFonts.openSansTextTheme(
               ThemeData.dark().textTheme,
