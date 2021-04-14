@@ -11,7 +11,7 @@ class ComposeFab extends StatelessWidget {
       label: 'Compose Post',
       child: FloatingActionButton.extended(
         icon: Icon(Icons.edit),
-        label: Text('Compose'),
+        label: Text('COMPOSE'),
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
