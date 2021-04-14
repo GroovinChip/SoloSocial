@@ -1,5 +1,6 @@
 import 'package:solo_social/library.dart';
 
+@deprecated
 class FirestoreControl {
   final CollectionReference users = FirebaseFirestore.instance.collection('Users');
   final String? userId;

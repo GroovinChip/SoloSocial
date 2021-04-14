@@ -1,5 +1,6 @@
 import 'package:solo_social/library.dart';
 
+@deprecated
 class GoogleAuth {
   /// Firebase related initializations
   final FirebaseAuth _auth = FirebaseAuth.instance;

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:solo_social/library.dart';
 
+@deprecated
 class AuthCheck extends StatefulWidget {
   @override
   _AuthCheckState createState() => _AuthCheckState();
@@ -30,7 +31,9 @@ class _AuthCheckState extends State<AuthCheck> {
       stream: _userBloc.currentUser,
       builder: (context, snapshot) {
         if (!snapshot.hasData && isLoading) {
-          return Container(color: Theme.of(context).canvasColor,);
+          return Container(
+            color: Theme.of(context).canvasColor,
+          );
         } else {
           if (_user != null) {
             return PostFeed(

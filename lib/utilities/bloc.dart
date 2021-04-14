@@ -1,5 +1,6 @@
 import 'package:solo_social/library.dart';
 
+@deprecated
 class Bloc {
   /// Controllers
   final _userController = BehaviorSubject<User?>();
