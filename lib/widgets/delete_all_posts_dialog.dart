@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:solo_social/firebase/firebase.dart';
 import 'package:solo_social/library.dart';
 
