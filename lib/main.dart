@@ -74,6 +74,12 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
+          snackBarTheme: SnackBarThemeData(
+            contentTextStyle: GoogleFonts.openSans(
+              textStyle: ThemeData.dark().textTheme.bodyText1,
+            ),
+            actionTextColor: Colors.white,
+          ),
           inputDecorationTheme: InputDecorationTheme(
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),

@@ -12,7 +12,6 @@ class _ComposePostState extends State<ComposePost> with FirebaseMixin {
   TextEditingController _postTextController = TextEditingController();
   TextEditingController _sourceLinkController = TextEditingController();
   TextEditingController _addTagController = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<String> _tags = [];
   List<String> _options = [
     'Post',
@@ -27,16 +26,15 @@ class _ComposePostState extends State<ComposePost> with FirebaseMixin {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardDismisser(
-      child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(
-          statusBarColor: Theme.of(context).canvasColor,
-          statusBarBrightness: Brightness.dark,
-          systemNavigationBarColor: Theme.of(context).canvasColor,
-          systemNavigationBarIconBrightness: Brightness.dark,
-        ),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).canvasColor,
+        statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: Theme.of(context).canvasColor,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+      child: KeyboardDismisser(
         child: Scaffold(
-          key: _scaffoldKey,
           appBar: AppBar(
             title: const Text(
               'Compose',
@@ -62,7 +60,6 @@ class _ComposePostState extends State<ComposePost> with FirebaseMixin {
                       value,
                       _postTextController.text,
                       _sourceLinkController.text,
-                      context,
                     );
                   },
                   selected: false,
@@ -343,38 +340,31 @@ class _ComposePostState extends State<ComposePost> with FirebaseMixin {
     bool value,
     String postText,
     String sourceLink,
-    BuildContext context,
   ) {
     if (value) {
       if (postText.isNotEmpty) {
         DateTime _timeCreated = DateTime.now();
         String _sourceLink = isURL(sourceLink) ? sourceLink : '';
-        try {
-          _addPostToFirestore(
-            postText,
-            _timeCreated,
-            _sourceLink,
-          );
-          Navigator.of(context).pop();
-        } catch (e) {
-          print(e);
-        }
+        firestore
+            .addPost(
+              currentUser!,
+              postText,
+              _timeCreated,
+              _sourceLink,
+              _tags,
+            )
+            .then((value) => Navigator.of(context).pop());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
-              children: <Widget>[
+              children: [
                 Icon(
                   MdiIcons.alertCircleOutline,
                   color: Colors.white,
                 ),
                 SizedBox(width: 8),
-                Text(
-                  'Please add some text to your post',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+                Text('Please add some text to your post'),
               ],
             ),
             backgroundColor: Theme.of(context).accentColor,
@@ -382,25 +372,6 @@ class _ComposePostState extends State<ComposePost> with FirebaseMixin {
           ),
         );
       }
-    }
-  }
-
-  /// Actually add data to Firestore
-  void _addPostToFirestore(
-    String postText,
-    DateTime _timeCreated,
-    String sourceLink,
-  ) async {
-    try {
-      firestore.posts(currentUser!.uid).add({
-        'Username': currentUser!.displayName,
-        'PostText': postText,
-        'TimeCreated': Timestamp.fromDate(_timeCreated),
-        'Tags': jsonEncode(_tags),
-        'SourceLink': sourceLink,
-      });
-    } catch (e) {
-      print(e);
     }
   }
 }

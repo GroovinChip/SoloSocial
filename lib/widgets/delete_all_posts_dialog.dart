@@ -24,7 +24,7 @@ class DeleteAllPostsDialog extends StatelessWidget with FirebaseMixin {
           ),
           onPressed: () async {
             await firestore.deleteAllPosts(_posts);
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(true);
           },
         ),
       ],

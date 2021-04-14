@@ -13,8 +13,8 @@ class _PostFeedState extends State<PostFeed> with FirebaseMixin {
       value: SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).canvasColor,
         statusBarBrightness: Brightness.dark,
-        systemNavigationBarColor: Theme.of(context).canvasColor,
-        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Theme.of(context).primaryColor,
+        systemNavigationBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
         appBar: AppBar(

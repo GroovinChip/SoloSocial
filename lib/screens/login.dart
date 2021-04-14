@@ -15,7 +15,7 @@ class _LoginState extends State<Login> with FirebaseMixin {
         statusBarColor: Theme.of(context).canvasColor,
         statusBarBrightness: Brightness.dark,
         systemNavigationBarColor: Theme.of(context).canvasColor,
-        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
         body: Column(
@@ -44,14 +44,7 @@ class _LoginState extends State<Login> with FirebaseMixin {
                 onPressed: () async {
                   auth.signInWithGoogle().then((_) async {
                     if (currentUser != null) {
-                      /*if (_firestoreControl.posts!
-                          .doc(FirebaseAuth.instance.currentUser!.uid)
-                          .path
-                          .isEmpty) {
-                        await _firestoreControl.posts!
-                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                            .set({});
-                      }*/
+                      firestore.initStorageForUser(currentUser!.uid);
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder: (context) => PostFeed(),
