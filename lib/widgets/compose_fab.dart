@@ -1,10 +1,6 @@
 import 'package:solo_social/library.dart';
 
 class ComposeFab extends StatelessWidget {
-  const ComposeFab({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Semantics(
