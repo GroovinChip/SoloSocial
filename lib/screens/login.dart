@@ -15,21 +15,20 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final _userBloc = Provider.of<Bloc>(context);
 
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Theme.of(context).canvasColor,
-      statusBarBrightness: Brightness.light,
-      systemNavigationBarColor: Theme.of(context).canvasColor,
-      systemNavigationBarIconBrightness: Brightness.light,
-    ));
-
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).canvasColor,
+        statusBarBrightness: Brightness.dark,
+        systemNavigationBarColor: Theme.of(context).canvasColor,
+        systemNavigationBarIconBrightness: Brightness.dark,
+      ),
+      child: Scaffold(
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
@@ -37,17 +36,16 @@ class _LoginState extends State<Login> {
                     style: TextStyle(
                       fontSize: 34,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 150),
+            const SizedBox(height: 26),
             Semantics(
               label: 'Sign in with Google',
               child: SignInButton(
-                Buttons.Google,
+                Buttons.GoogleDark,
                 onPressed: () async {
                   _googleAuth.handleSignIn().then((_) async {
                     if (FirebaseAuth.instance.currentUser != null) {
@@ -65,13 +63,6 @@ class _LoginState extends State<Login> {
                             .doc(FirebaseAuth.instance.currentUser!.uid)
                             .set({});
                       }
-                      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                        statusBarColor: Theme.of(context).canvasColor,
-                        statusBarBrightness: Brightness.light,
-                        systemNavigationBarColor:
-                            Theme.of(context).primaryColor,
-                        systemNavigationBarIconBrightness: Brightness.light,
-                      ));
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
                           builder: (context) => PostFeed(
