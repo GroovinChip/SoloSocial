@@ -34,7 +34,6 @@ export 'package:solo_social/screens/compose_post.dart';
 export 'package:solo_social/screens/post_search.dart';
 export 'package:solo_social/screens/introduction.dart';
 export 'package:solo_social/screens/landing.dart';
-export 'package:solo_social/screens/signup.dart';
 export 'package:solo_social/screens/login.dart';
 
 /// Widgets
@@ -44,6 +43,4 @@ export 'package:solo_social/widgets/compose_fab.dart';
 
 /// Utilities
 export 'package:solo_social/utilities/auth_check.dart';
-export 'package:solo_social/utilities/bloc.dart';
-export 'package:solo_social/utilities/firestore_control.dart';
 export 'package:solo_social/utilities/export_posts.dart';

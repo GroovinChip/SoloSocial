@@ -1,41 +1,36 @@
+import 'package:solo_social/firebase/firebase.dart';
 import 'package:solo_social/library.dart';
-import 'package:solo_social/utilities/firestore_control.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostCard extends StatefulWidget {
-  final User? user;
-  final DateTime? timeCreated;
-  final String? postId;
-  final String? username;
-  final String? postText;
-  final List<String>? tags;
-  final String? sourceLink;
-  final FirestoreControl? firestoreControl;
-
   const PostCard({
     Key? key,
-    this.user,
-    this.timeCreated,
-    this.postId,
-    this.username,
-    this.postText,
+    required this.timeCreated,
+    required this.postId,
+    required this.postText,
     this.tags,
     this.sourceLink,
-    this.firestoreControl,
   }) : super(key: key);
+
+  final DateTime timeCreated;
+  final String postId;
+  final String postText;
+  final List<String>? tags;
+  final String? sourceLink;
 
   @override
   _PostCardState createState() => _PostCardState();
 }
 
-class _PostCardState extends State<PostCard> {
+class _PostCardState extends State<PostCard> with FirebaseMixin {
   void _handleMenuSelection(String selection) {
     switch (selection) {
       case 'Share':
-        Share.share(widget.postText!, subject: 'Check out my post from SoloSocial');
+        Share.share(widget.postText,
+            subject: 'Check out my post from SoloSocial');
         break;
       case 'Delete':
-        widget.firestoreControl!.posts!.doc(widget.postId).delete();
+        firestore.deletePost(currentUser!.uid, widget.postId);
         break;
     }
   }
@@ -43,25 +38,22 @@ class _PostCardState extends State<PostCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.indigo[300],
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       elevation: 8,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        children: [
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(widget.user!.photoURL!),
+              backgroundImage: NetworkImage(currentUser!.photoURL!),
             ),
             title: Text(
-              widget.username!,
+              currentUser!.displayName!,
               style: TextStyle(
-                color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
             subtitle: Text(
-              timeago.format(widget.timeCreated!),
+              timeago.format(widget.timeCreated),
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -69,35 +61,24 @@ class _PostCardState extends State<PostCard> {
             trailing: Semantics(
               label: 'See options',
               child: PopupMenuButton(
-                child: Ink(
-                  child: Icon(Icons.keyboard_arrow_down),
-                  width: 50,
-                  height: 50,
-                ),
-                color: Colors.indigo[700],
+                child: Icon(Icons.keyboard_arrow_down),
                 itemBuilder: (_) => [
                   PopupMenuItem(
                     child: Row(
-                      children: <Widget>[
+                      children: [
                         Icon(MdiIcons.share),
                         SizedBox(width: 8),
-                        Text(
-                          'Share',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        Text('Share'),
                       ],
                     ),
                     value: 'Share',
                   ),
                   PopupMenuItem(
                     child: Row(
-                      children: <Widget>[
+                      children: [
                         Icon(MdiIcons.delete),
                         SizedBox(width: 8),
-                        Text(
-                          'Delete',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        Text('Delete'),
                       ],
                     ),
                     value: 'Delete',
@@ -109,51 +90,45 @@ class _PostCardState extends State<PostCard> {
           ),
           ListTile(
             title: Text(
-              widget.postText!,
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-              ),
+              widget.postText,
+              style: TextStyle(fontSize: 18),
             ),
           ),
-          widget.tags!.length > 0
-              ? Padding(
-                  padding: const EdgeInsets.only(left: 12, right: 12),
-                  child: Container(
-                    height: 50,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.tags!.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: Chip(
-                            label: Text(widget.tags![index]),
-                            backgroundColor: Theme.of(context).accentColor,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                )
-              : Container(),
-          widget.tags!.length > 0 ? SizedBox(height: 12) : Container(),
-          widget.sourceLink == 'NoSource'
-              ? Container()
-              : LinkPreviewer(
-                  link: widget.sourceLink!,
-                  defaultPlaceholderColor: Colors.indigo[300],
-                  placeholder: Text(
-                    'Loading link preview',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  borderRadius: 14,
-                  backgroundColor: Colors.indigo[300],
-                  titleTextColor: Colors.white,
-                  bodyTextColor: Colors.white,
-                  bodyMaxLines: 2,
-                  borderColor: Colors.indigo[300],
+          if (widget.tags!.isNotEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.only(left: 12, right: 12),
+              child: Container(
+                height: 50,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: widget.tags!.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Chip(
+                        label: Text(widget.tags![index]),
+                        backgroundColor: Theme.of(context).accentColor,
+                      ),
+                    );
+                  },
                 ),
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
+          if (widget.sourceLink != 'NoSource') ...[
+            LinkPreviewer(
+              link: widget.sourceLink!,
+              defaultPlaceholderColor: Colors.indigo.shade300,
+              placeholder: Text('Loading link preview'),
+              borderRadius: 14,
+              backgroundColor: Colors.indigo.shade300,
+              titleTextColor: Colors.white,
+              bodyTextColor: Colors.white,
+              bodyMaxLines: 2,
+              borderColor: Colors.indigo.shade300,
+            ),
+          ],
         ],
       ),
     );

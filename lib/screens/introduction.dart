@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sentry/sentry.dart';
+import 'package:solo_social/firebase/firebase.dart';
 import 'package:solo_social/library.dart';
 import 'package:solo_social/screens/post_feed.dart';
-import 'package:solo_social/utilities/firestore_control.dart';
-import 'package:solo_social/utilities/google_auth.dart';
 
 class Introduction extends StatefulWidget {
   @override
   _IntroductionState createState() => _IntroductionState();
 }
 
-class _IntroductionState extends State<Introduction> {
+class _IntroductionState extends State<Introduction> with FirebaseMixin {
   late SharedPreferences _prefs;
-  final GoogleAuth _googleAuth = GoogleAuth();
 
   void _setFirstLaunchFlag() async {
     _prefs = await SharedPreferences.getInstance();
@@ -26,8 +24,6 @@ class _IntroductionState extends State<Introduction> {
 
   @override
   Widget build(BuildContext context) {
-    final _userBloc = Provider.of<Bloc>(context);
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Theme.of(context).canvasColor,
       statusBarBrightness: Brightness.light,
@@ -146,35 +142,20 @@ class _IntroductionState extends State<Introduction> {
               bodyWidget: SignInButton(
                 Buttons.Google,
                 onPressed: () async {
-                  _googleAuth.handleSignIn().then((_) async {
+                  auth.signInWithGoogle().then((_) async {
                     _setFirstLaunchFlag();
-                    if (FirebaseAuth.instance.currentUser != null) {
-                      _userBloc.user.add(FirebaseAuth.instance.currentUser);
-                      final _firestoreControl = FirestoreControl(
-                        userId: FirebaseAuth.instance.currentUser!.uid,
-                        context: context,
-                      );
-                      _firestoreControl.getPosts();
-                      if (_firestoreControl.posts!
+                    if (currentUser != null) {
+                      /*if (_firestoreControl.posts!
                           .doc(FirebaseAuth.instance.currentUser!.uid)
                           .path
                           .isEmpty) {
                         await _firestoreControl.posts!
                             .doc(FirebaseAuth.instance.currentUser!.uid)
                             .set({});
-                      }
-                      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                        statusBarColor: Theme.of(context).canvasColor,
-                        statusBarBrightness: Brightness.light,
-                        systemNavigationBarColor:
-                            Theme.of(context).primaryColor,
-                        systemNavigationBarIconBrightness: Brightness.light,
-                      ));
+                      }*/
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                          builder: (context) => PostFeed(
-                            user: FirebaseAuth.instance.currentUser,
-                          ),
+                          builder: (context) => PostFeed(),
                         ),
                         (route) => false,
                       );
