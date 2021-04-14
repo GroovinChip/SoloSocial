@@ -51,6 +51,11 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
             brightness: Brightness.dark,
             primaryColor: Colors.indigo,
             accentColor: Colors.indigoAccent,
+            canvasColor: Colors.indigo.shade800,
+            appBarTheme: AppBarTheme(
+              color: Colors.indigo.shade800,
+              elevation: 0,
+            ),
             cardTheme: CardTheme(
               elevation: 8.0,
               shape: RoundedRectangleBorder(
@@ -61,7 +66,6 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
             popupMenuTheme: PopupMenuThemeData(
               color: Colors.indigo.shade700,
             ),
-            canvasColor: Colors.indigo.shade800,
             textTheme: GoogleFonts.openSansTextTheme(
               ThemeData.dark().textTheme,
             ),
@@ -69,7 +73,7 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
               selectionHandleColor: Colors.indigoAccent,
             ),
             dialogTheme: DialogTheme(
-              backgroundColor: Colors.indigo,
+              backgroundColor: Colors.indigo.shade800,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
