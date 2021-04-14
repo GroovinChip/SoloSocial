@@ -85,6 +85,7 @@ class _ComposePostState extends State<ComposePost> with FirebaseMixin {
                       Expanded(
                         child: TextField(
                           controller: _postTextController,
+                          autofocus: true,
                           textCapitalization: TextCapitalization.sentences,
                           autocorrect: true,
                           decoration: InputDecoration(
