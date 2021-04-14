@@ -29,11 +29,6 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
   final _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -53,13 +48,19 @@ class _SoloSocialAppState extends State<SoloSocialApp> {
           navigatorKey: _navigatorKey,
           title: 'SoloSocial',
           theme: ThemeData(
-            primarySwatch: Colors.indigo,
+            brightness: Brightness.dark,
             primaryColor: Colors.indigo,
             accentColor: Colors.indigoAccent,
-            brightness: Brightness.dark,
-            canvasColor: Colors.indigo[800],
+            cardTheme: CardTheme(
+              elevation: 8.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              color: Colors.indigo.shade300,
+            ),
+            canvasColor: Colors.indigo.shade800,
             textTheme: GoogleFonts.openSansTextTheme(
-              Theme.of(context).textTheme,
+              ThemeData.dark().textTheme,
             ),
             textSelectionTheme: TextSelectionThemeData(
               selectionHandleColor: Colors.indigoAccent,
