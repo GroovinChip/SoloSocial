@@ -1,20 +1,15 @@
 import 'package:sentry/sentry.dart';
+import 'package:solo_social/firebase/firebase.dart';
 import 'package:solo_social/library.dart';
-import 'package:solo_social/utilities/firestore_control.dart';
-import 'package:solo_social/utilities/google_auth.dart';
 
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
-  final GoogleAuth _googleAuth = GoogleAuth();
-
+class _LoginState extends State<Login> with FirebaseMixin {
   @override
   Widget build(BuildContext context) {
-    final _userBloc = Provider.of<Bloc>(context);
-
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).canvasColor,
@@ -47,27 +42,19 @@ class _LoginState extends State<Login> {
               child: SignInButton(
                 Buttons.GoogleDark,
                 onPressed: () async {
-                  _googleAuth.handleSignIn().then((_) async {
-                    if (FirebaseAuth.instance.currentUser != null) {
-                      _userBloc.user.add(FirebaseAuth.instance.currentUser);
-                      final _firestoreControl = FirestoreControl(
-                        userId: FirebaseAuth.instance.currentUser!.uid,
-                        context: context,
-                      );
-                      _firestoreControl.getPosts();
-                      if (_firestoreControl.posts!
+                  auth.signInWithGoogle().then((_) async {
+                    if (currentUser != null) {
+                      /*if (_firestoreControl.posts!
                           .doc(FirebaseAuth.instance.currentUser!.uid)
                           .path
                           .isEmpty) {
                         await _firestoreControl.posts!
                             .doc(FirebaseAuth.instance.currentUser!.uid)
                             .set({});
-                      }
+                      }*/
                       Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
-                          builder: (context) => PostFeed(
-                            user: FirebaseAuth.instance.currentUser,
-                          ),
+                          builder: (context) => PostFeed(),
                         ),
                         (route) => false,
                       );

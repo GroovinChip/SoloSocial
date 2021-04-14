@@ -1,42 +1,36 @@
+import 'package:solo_social/firebase/firebase.dart';
 import 'package:solo_social/library.dart';
-import 'package:solo_social/utilities/firestore_control.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostCard extends StatefulWidget {
   const PostCard({
     Key? key,
-    this.user,
-    this.timeCreated,
-    this.postId,
-    this.username,
-    this.postText,
+    required this.timeCreated,
+    required this.postId,
+    required this.postText,
     this.tags,
     this.sourceLink,
-    this.firestoreControl,
   }) : super(key: key);
 
-  final User? user;
-  final DateTime? timeCreated;
-  final String? postId;
-  final String? username;
-  final String? postText;
+  final DateTime timeCreated;
+  final String postId;
+  final String postText;
   final List<String>? tags;
   final String? sourceLink;
-  final FirestoreControl? firestoreControl;
 
   @override
   _PostCardState createState() => _PostCardState();
 }
 
-class _PostCardState extends State<PostCard> {
+class _PostCardState extends State<PostCard> with FirebaseMixin {
   void _handleMenuSelection(String selection) {
     switch (selection) {
       case 'Share':
-        Share.share(widget.postText!,
+        Share.share(widget.postText,
             subject: 'Check out my post from SoloSocial');
         break;
       case 'Delete':
-        widget.firestoreControl!.posts!.doc(widget.postId).delete();
+        firestore.deletePost(currentUser!.uid, widget.postId);
         break;
     }
   }
@@ -50,16 +44,16 @@ class _PostCardState extends State<PostCard> {
         children: [
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(widget.user!.photoURL!),
+              backgroundImage: NetworkImage(currentUser!.photoURL!),
             ),
             title: Text(
-              widget.username!,
+              currentUser!.displayName!,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
             subtitle: Text(
-              timeago.format(widget.timeCreated!),
+              timeago.format(widget.timeCreated),
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -96,7 +90,7 @@ class _PostCardState extends State<PostCard> {
           ),
           ListTile(
             title: Text(
-              widget.postText!,
+              widget.postText,
               style: TextStyle(fontSize: 18),
             ),
           ),

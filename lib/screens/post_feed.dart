@@ -1,27 +1,14 @@
+import 'package:solo_social/firebase/firebase.dart';
 import 'package:solo_social/library.dart';
-import 'package:solo_social/utilities/firestore_control.dart';
 
 class PostFeed extends StatefulWidget {
-  const PostFeed({
-    Key? key,
-    required this.user,
-  }) : super(key: key);
-
-  final User? user;
-
   @override
   _PostFeedState createState() => _PostFeedState();
 }
 
-class _PostFeedState extends State<PostFeed> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+class _PostFeedState extends State<PostFeed> with FirebaseMixin {
   @override
   Widget build(BuildContext context) {
-    final _firestoreControl = FirestoreControl(
-      userId: widget.user!.uid,
-      context: context,
-    );
-    _firestoreControl.getPosts();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
         statusBarColor: Theme.of(context).canvasColor,
@@ -30,7 +17,6 @@ class _PostFeedState extends State<PostFeed> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(
             'Posts',
@@ -42,7 +28,8 @@ class _PostFeedState extends State<PostFeed> {
           ),
         ),
         body: StreamBuilder<QuerySnapshot>(
-          stream: _firestoreControl.posts!
+          stream: firestore
+              .posts(currentUser!.uid)
               .orderBy('TimeCreated', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
@@ -68,16 +55,13 @@ class _PostFeedState extends State<PostFeed> {
                           (jsonDecode(_post['Tags']) as List).cast<String>();
                     }
                     return PostCard(
-                      user: widget.user,
                       timeCreated: (_post['TimeCreated'] as Timestamp).toDate(),
                       postId: _post.id,
-                      username: _post['Username'],
                       postText: _post['PostText'],
                       tags: _tags == null || _tags.length == 0 ? [] : _tags,
                       sourceLink: _post['SourceLink'].toString().isEmpty
                           ? 'NoSource'
                           : _post['SourceLink'],
-                      firestoreControl: _firestoreControl,
                     );
                   },
                 );
@@ -105,9 +89,7 @@ class _PostFeedState extends State<PostFeed> {
                           topLeft: Radius.circular(12),
                         ),
                       ),
-                      builder: (_) => MainMenuSheet(
-                        user: widget.user,
-                      ),
+                      builder: (_) => MainMenuSheet(),
                     ),
                   ),
                 ),

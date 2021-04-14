@@ -1,15 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:solo_social/firebase/firebase.dart';
 import 'package:solo_social/library.dart';
 
-class DeleteAllPostsDialog extends StatelessWidget {
+class DeleteAllPostsDialog extends StatelessWidget with FirebaseMixin {
   const DeleteAllPostsDialog({
     Key? key,
-    required FirestoreControl firestoreControl,
     required List<DocumentSnapshot> posts,
-  })   : _firestoreControl = firestoreControl,
-        _posts = posts,
+  })   : _posts = posts,
         super(key: key);
 
-  final FirestoreControl _firestoreControl;
   final List<DocumentSnapshot> _posts;
 
   @override
@@ -25,7 +24,7 @@ class DeleteAllPostsDialog extends StatelessWidget {
             ),
           ),
           onPressed: () async {
-            await _firestoreControl.deleteAllPosts(_posts);
+            await firestore.deleteAllPosts(_posts);
             Navigator.of(context).pop();
           },
         ),

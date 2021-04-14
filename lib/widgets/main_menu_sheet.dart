@@ -1,21 +1,14 @@
 import 'package:sentry/sentry.dart';
+import 'package:solo_social/firebase/firebase.dart';
 import 'package:solo_social/library.dart';
-import 'package:solo_social/utilities/firestore_control.dart';
 import 'package:solo_social/widgets/delete_all_posts_dialog.dart';
 
 class MainMenuSheet extends StatefulWidget {
-  MainMenuSheet({
-    required this.user,
-  });
-
-  final User? user;
-
   @override
   _MainMenuSheetState createState() => _MainMenuSheetState();
 }
 
-class _MainMenuSheetState extends State<MainMenuSheet> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class _MainMenuSheetState extends State<MainMenuSheet> with FirebaseMixin {
   PackageInfo? _packageInfo;
   PermissionStatus? storagePermission;
 
@@ -39,13 +32,8 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final _firestoreControl = FirestoreControl(
-      userId: widget.user!.uid,
-      context: context,
-    );
-    _firestoreControl.getPosts();
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestoreControl.posts!.snapshots(),
+      stream: firestore.posts(currentUser!.uid).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -63,10 +51,10 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
               ListTile(
                 leading: CircleAvatar(
                   backgroundColor: Colors.white,
-                  backgroundImage: NetworkImage(widget.user!.photoURL!),
+                  backgroundImage: NetworkImage(currentUser!.photoURL!),
                 ),
-                title: Text(widget.user!.displayName!),
-                subtitle: Text(widget.user!.email!),
+                title: Text(currentUser!.displayName!),
+                subtitle: Text(currentUser!.email!),
                 trailing: OutlinedButton(
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(
@@ -83,7 +71,7 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                     ),
                   ),
                   onPressed: () {
-                    _auth.signOut();
+                    auth.signOut();
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => Login(),
@@ -120,7 +108,6 @@ class _MainMenuSheetState extends State<MainMenuSheet> {
                     showDialog(
                       context: context,
                       builder: (_) => DeleteAllPostsDialog(
-                        firestoreControl: _firestoreControl,
                         posts: _posts,
                       ),
                     );

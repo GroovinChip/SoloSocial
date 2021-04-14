@@ -44,5 +44,4 @@ export 'package:solo_social/widgets/compose_fab.dart';
 /// Utilities
 export 'package:solo_social/utilities/auth_check.dart';
 export 'package:solo_social/utilities/bloc.dart';
-export 'package:solo_social/utilities/firestore_control.dart';
 export 'package:solo_social/utilities/export_posts.dart';
