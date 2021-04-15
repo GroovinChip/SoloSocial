@@ -15,7 +15,7 @@ dependencies:
   provider: ^5.0.0
   google_fonts: ^2.0.0
   firebase_core: ^1.0.3
-  firebase_auth: ^1.0.3
+  firebase_auth: ^1.1.0
   google_sign_in: ^5.0.1
   cloud_firestore: ^1.0.4
   groovin_widgets: ^2.0.0
